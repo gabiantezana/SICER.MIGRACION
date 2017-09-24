@@ -13,9 +13,11 @@ namespace SICER.MIGRACION.Helper
         {
             return fields[item];
         }
+
+        /*
         public static void DoQuery(this Recordset recordset, String query)
         {
             recordset = new SQLConnection().DoQuery(query);
-        }
+        }*/
     }
 }

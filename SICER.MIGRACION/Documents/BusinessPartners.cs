@@ -1,4 +1,5 @@
-﻿using SICER.MIGRACION.Helper;
+﻿using SICER.MIGRACION.Connections;
+using SICER.MIGRACION.Helper;
 using SICER.MIGRACION.Model;
 using System;
 using System.Collections.Generic;
@@ -31,7 +32,7 @@ namespace SICER.MIGRACION.Documents
             }
             updateString += "WHERE CardCode = '" + id + "' AND Code = '" + code + "'";
 
-            updateRS.DoQuery(updateString);
+            updateRS = new SQLConnection().DoQuery(updateString);
         }
 
         protected override bool migrateDocuments(SAPbobsCOM.Company Company, ADODB.Recordset migrationRS)

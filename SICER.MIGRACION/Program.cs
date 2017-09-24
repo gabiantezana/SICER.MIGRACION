@@ -1,4 +1,6 @@
-﻿using System;
+﻿using SICER.MIGRACION.Documents;
+using SICER.MIGRACION.Documents.Structs;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.ServiceProcess;
@@ -15,9 +17,22 @@ namespace SICER.MIGRACION
         {
             try
             {
-                ServiceBase[] ServicesToRun;
-                ServicesToRun = new ServiceBase[] { new MainTasks() };
-                ServiceBase.Run(ServicesToRun);
+                SAPbobsCOM.Company Company = null;
+
+                //BusinessPartners bp = new BusinessPartners(Company);
+                //bp.migrateBP(Company);
+
+                JournalEntries je = new JournalEntries(Company);
+                je.migrate(Company);
+
+                Invoices rInv = new Invoices(Company);
+                rInv.migrate(Company);
+
+                WebInvoices webInv = new WebInvoices();
+                webInv.migrate(Company);
+
+                SalesInvoices salesInv = new SalesInvoices(Company);
+                salesInv.migrate(Company);
             }
             catch (Exception e)
             {

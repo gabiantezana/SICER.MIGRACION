@@ -34,7 +34,7 @@ namespace SICER.MIGRACION.Documents
                 updateString += "E', INT_Error = '" + Company.GetLastErrorDescription().Replace('\'', ' ') + "' ";
             }
             updateString += "WHERE IdAsiento = " + id;
-            updateRS.DoQuery(updateString);
+            updateRS = new SQLConnection().DoQuery(updateString);
         }
 
         protected override bool migrateDocuments(SAPbobsCOM.Company Company, ADODB.Recordset migrationRS)

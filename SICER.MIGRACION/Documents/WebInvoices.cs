@@ -1,4 +1,5 @@
-﻿using SICER.MIGRACION.Helper;
+﻿using SICER.MIGRACION.Connections;
+using SICER.MIGRACION.Helper;
 using SICER.MIGRACION.Model;
 using System;
 using System.Collections.Generic;
@@ -18,7 +19,7 @@ namespace SICER.MIGRACION.Documents
             ADODB.Recordset migrationRS = new ADODB.Recordset();
             ADODB.Recordset updateRS = new ADODB.Recordset();
 
-            migrationRS.DoQuery(INVOICES_SP_HEADER);
+            migrationRS = new SQLConnection().DoQuery(INVOICES_SP_HEADER);
 
             while (!migrationRS.EOF)
             {
@@ -81,9 +82,8 @@ namespace SICER.MIGRACION.Documents
                 invoice.UserFields.Fields.Item("U_Etapa").Value = etapa;
                 invoice.UserFields.Fields.Item("U_WebType").Value = tipoDoc;
 
-                ADODB.Recordset lines = new ADODB.Recordset();
                 String query = INVOICES_SP_LINES + "'" + exCode + "', '" + tipoDoc + "', '" + etapa + "', '" + migrationRS.Fields.Item("IdFactura").Value + "'";
-                lines.DoQuery(query);
+                ADODB.Recordset lines = new SQLConnection().DoQuery(query);
                 while (!lines.EOF)
                 {
                     invoice.Lines.AccountCode = lines.Fields.Item("AccountCode").Value;
@@ -114,25 +114,34 @@ namespace SICER.MIGRACION.Documents
                     }
                     if (shouldProceed)
                     {
-                        updateRS.DoQuery("UPDATE " + INVOICES_TABLE + " SET INT_Estado = 'P' WHERE IdFactura = " + idFactura + " AND ExCode = " + exCode + " AND TipoDocumento = " + tipoDoc + " AND Etapa = " + etapa);
+                        updateRS = new SQLConnection().DoQuery("UPDATE " + INVOICES_TABLE + " SET INT_Estado = 'P' WHERE IdFactura = " + idFactura + " AND ExCode = " + exCode + " AND TipoDocumento = " + tipoDoc + " AND Etapa = " + etapa);
                         Company.EndTransaction(SAPbobsCOM.BoWfTransOpt.wf_Commit);
                     }
                     else
                     {
-                        if (Company.InTransaction) { Company.EndTransaction(SAPbobsCOM.BoWfTransOpt.wf_RollBack); }
-                        updateRS.DoQuery("UPDATE " + INVOICES_TABLE + " SET INT_Estado = 'E', INT_Error = '" + Company.GetLastErrorDescription().Replace('\'', ' ') + "' WHERE IdFactura = " + idFactura + " AND ExCode = " + exCode + " AND TipoDocumento = " + tipoDoc + " AND Etapa = " + etapa);
+                        if (Company.InTransaction)
+                        {
+                            Company.EndTransaction(SAPbobsCOM.BoWfTransOpt.wf_RollBack);
+                        }
+                        updateRS = new SQLConnection().DoQuery("UPDATE " + INVOICES_TABLE + " SET INT_Estado = 'E', INT_Error = '" + Company.GetLastErrorDescription().Replace('\'', ' ') + "' WHERE IdFactura = " + idFactura + " AND ExCode = " + exCode + " AND TipoDocumento = " + tipoDoc + " AND Etapa = " + etapa);
                     }
                 }
                 else
                 {
-                    if (Company.InTransaction) { Company.EndTransaction(SAPbobsCOM.BoWfTransOpt.wf_RollBack); }
-                    updateRS.DoQuery("UPDATE " + INVOICES_TABLE + " SET INT_Estado = 'E', INT_Error = '" + Company.GetLastErrorDescription().Replace('\'', ' ') + "' WHERE IdFactura = " + idFactura + " AND ExCode = " + exCode + " AND TipoDocumento = " + tipoDoc + " AND Etapa = " + etapa);
+                    if (Company.InTransaction)
+                    {
+                        Company.EndTransaction(SAPbobsCOM.BoWfTransOpt.wf_RollBack);
+                    }
+                    updateRS = new SQLConnection().DoQuery("UPDATE " + INVOICES_TABLE + " SET INT_Estado = 'E', INT_Error = '" + Company.GetLastErrorDescription().Replace('\'', ' ') + "' WHERE IdFactura = " + idFactura + " AND ExCode = " + exCode + " AND TipoDocumento = " + tipoDoc + " AND Etapa = " + etapa);
                 }
             }
             catch (Exception e)
             {
-                if (Company.InTransaction) { Company.EndTransaction(SAPbobsCOM.BoWfTransOpt.wf_RollBack); }
-                updateRS.DoQuery("UPDATE " + INVOICES_TABLE + " SET INT_Estado = 'E', INT_Error = '" + e.ToString().Replace('\'', ' ') + "' WHERE IdFactura = " + idFactura + " AND ExCode = " + exCode + " AND TipoDocumento = " + tipoDoc + " AND Etapa = " + etapa);
+                if (Company.InTransaction)
+                {
+                    Company.EndTransaction(SAPbobsCOM.BoWfTransOpt.wf_RollBack);
+                }
+                updateRS = new SQLConnection().DoQuery("UPDATE " + INVOICES_TABLE + " SET INT_Estado = 'E', INT_Error = '" + e.ToString().Replace('\'', ' ') + "' WHERE IdFactura = " + idFactura + " AND ExCode = " + exCode + " AND TipoDocumento = " + tipoDoc + " AND Etapa = " + etapa);
             }
         }
 
@@ -145,7 +154,7 @@ namespace SICER.MIGRACION.Documents
             ADODB.Recordset stageOneAccount = new ADODB.Recordset();
             //String query = "EXEC SEI_ATW_CuentasPago " + doc.UserFields.Fields.Item("U_WebType").Value + ", " + doc.UserFields.Fields.Item("U_ExCode").Value;
             String query = "EXEC  " + nameof(SICER_INT_SBOEntities.MSS_SP_SICER_CUENTASPAGO) + " " + doc.UserFields.Fields.Item("U_WebType").Value + ", " + doc.UserFields.Fields.Item("U_ExCode").Value;
-            stageOneAccount.DoQuery(query);
+            stageOneAccount = new SQLConnection().DoQuery(query);
 
             payment.CardCode = doc.CardCode;
             payment.DocDate = doc.DocDate;

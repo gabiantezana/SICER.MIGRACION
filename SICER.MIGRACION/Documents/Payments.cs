@@ -1,4 +1,5 @@
-﻿using SICER.MIGRACION.Helper;
+﻿using SICER.MIGRACION.Connections;
+using SICER.MIGRACION.Helper;
 using SICER.MIGRACION.Model;
 using System;
 using System.Collections.Generic;
@@ -17,7 +18,7 @@ namespace SICER.MIGRACION.Documents
 
             //pendingPayments.DoQuery("EXEC SEI_STW_AccountPayments");
             String Execquery = "EXEC " + nameof(SICER_INT_SBOEntities.MSS_SP_SICER_ACCOUNTPAYMENTS);
-            pendingPayments.DoQuery(Execquery);
+            pendingPayments = new SQLConnection().DoQuery(Execquery);
 
             while (!pendingPayments.EOF)
             {
@@ -27,7 +28,7 @@ namespace SICER.MIGRACION.Documents
                     if (payDocument(Company, pendingPayments))
                     {
                         String query = "UPDATE PagosCuenta SET INT_Estado = 'P' WHERE IdPago = " + pendingPayments.Fields.Item("IdPago").Value;
-                        updateRS.DoQuery(query);
+                        updateRS = new SQLConnection().DoQuery(query);
                         Company.EndTransaction(SAPbobsCOM.BoWfTransOpt.wf_Commit);
                     }
                     else
@@ -37,7 +38,7 @@ namespace SICER.MIGRACION.Documents
                             Company.EndTransaction(SAPbobsCOM.BoWfTransOpt.wf_RollBack);
                         }
                         String query = "UPDATE PagosCuenta SET INT_Estado = 'E', INT_Desc = '" + Company.GetLastErrorDescription().Replace('\'', ' ') + "' WHERE IdPago = " + pendingPayments.Fields.Item("IdPago").Value;
-                        updateRS.DoQuery(query);
+                        updateRS = new SQLConnection().DoQuery(query);
                     }
                 }
                 catch (Exception)
@@ -49,7 +50,7 @@ namespace SICER.MIGRACION.Documents
                             Company.EndTransaction(SAPbobsCOM.BoWfTransOpt.wf_RollBack);
                         }
                         String query = "UPDATE PagosCuenta SET INT_Estado = 'E' WHERE IdPago = " + pendingPayments.Fields.Item("IdPago").Value;
-                        updateRS.DoQuery(query);
+                        updateRS = new SQLConnection().DoQuery(query);
                     }
                 }
                 finally

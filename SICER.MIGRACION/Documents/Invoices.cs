@@ -33,7 +33,8 @@ namespace SICER.MIGRACION.Documents
                 updateString += "E', INT_Error = '" + Company.GetLastErrorDescription().Replace('\'', ' ') + "' ";
             }
             updateString += "WHERE IdFactura = " + id;
-            updateRS.DoQuery(updateString);
+
+            updateRS = new SQLConnection().DoQuery(updateString);
         }
 
         protected override bool migrateDocuments(SAPbobsCOM.Company Company, ADODB.Recordset migrationRS)
@@ -63,8 +64,6 @@ namespace SICER.MIGRACION.Documents
 
             String asf = INVOICES_SP_LINES + migrationRS.Fields.Item("IdFactura").Value;
             ADODB.Recordset lines = new SQLConnection().DoQuery(asf);
-
-            lines.DoQuery("");
 
             while (!lines.EOF)
             {
