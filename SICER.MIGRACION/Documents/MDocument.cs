@@ -1,4 +1,5 @@
-﻿using System;
+﻿using SICER.MIGRACION.Helper;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -7,18 +8,18 @@ namespace SICER.MIGRACION.Documents
     abstract class MDocument : IDisposable {
         protected readonly string migrationSP;
         protected readonly string keyField;
-        protected SAPbobsCOM.Recordset updateRS;
+        protected ADODB.Recordset updateRS;
 
         protected MDocument(SAPbobsCOM.Company Company, string migrationStoredProcedure, string KeyField) {
-            updateRS = Company.GetBusinessObject(SAPbobsCOM.BoObjectTypes.BoRecordset);
+            updateRS = new ADODB.Recordset();
             migrationSP = migrationStoredProcedure;
             keyField = KeyField;
         }
 
         public void migrateBP(SAPbobsCOM.Company Company) {
-            SAPbobsCOM.Recordset migrationRS = Company.GetBusinessObject(SAPbobsCOM.BoObjectTypes.BoRecordset);
+            ADODB.Recordset migrationRS = new ADODB.Recordset();
             migrationRS.DoQuery(migrationSP);
-            while (!migrationRS.EoF) {
+            while (!migrationRS.EOF) {
                 Company.StartTransaction();
                 string currentDocEntry = migrationRS.Fields.Item(keyField).Value;
                 string code = migrationRS.Fields.Item("Code").Value;
@@ -44,9 +45,9 @@ namespace SICER.MIGRACION.Documents
         }
 
         public void migrate(SAPbobsCOM.Company Company) {
-            SAPbobsCOM.Recordset migrationRS = Company.GetBusinessObject(SAPbobsCOM.BoObjectTypes.BoRecordset);
+            ADODB.Recordset migrationRS = new ADODB.Recordset();
             migrationRS.DoQuery(migrationSP);
-            while (!migrationRS.EoF) {
+            while (!migrationRS.EOF) {
                 Company.StartTransaction();
                 int currentDocEntry = migrationRS.Fields.Item(keyField).Value;
                 string Code = migrationRS.Fields.Item("Code").Value;
@@ -73,7 +74,7 @@ namespace SICER.MIGRACION.Documents
 
         protected abstract void update(SAPbobsCOM.Company Company, bool successful, string id, string Code);
 
-        protected abstract bool migrateDocuments(SAPbobsCOM.Company Company, SAPbobsCOM.Recordset migrationRS);
+        protected abstract bool migrateDocuments(SAPbobsCOM.Company Company, ADODB.Recordset migrationRS);
 
         public void Dispose() {
             System.Runtime.InteropServices.Marshal.ReleaseComObject(updateRS);

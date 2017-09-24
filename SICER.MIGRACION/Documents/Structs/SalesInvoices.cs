@@ -1,4 +1,6 @@
-﻿using System;
+﻿using SICER.MIGRACION.Helper;
+using SICER.MIGRACION.Model;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -8,7 +10,7 @@ namespace SICER.MIGRACION.Documents.Structs
     class SalesInvoices : MDocument
     {
 
-        private const string INVOICES_HEADER_SP = "SEI_STW_PayrollInvoices";
+        private const string INVOICES_HEADER_SP = nameof(SICER_INT_SBOEntities.MSS_SP_SICER_PAYROLLINVOICES); //"SEI_STW_PayrollInvoices";
         private const string INVOICES_TABLE = "FacturasPayroll";
         private const string INVOICES_KEY = "IdFactura";
 
@@ -29,10 +31,11 @@ namespace SICER.MIGRACION.Documents.Structs
                 updateString += "E', INT_Error = '" + Company.GetLastErrorDescription().Replace('\'', ' ') + "' ";
             }
             updateString += "WHERE IdFactura = " + id;
+
             updateRS.DoQuery(updateString);
         }
 
-        protected override bool migrateDocuments(SAPbobsCOM.Company Company, SAPbobsCOM.Recordset migrationRS)
+        protected override bool migrateDocuments(SAPbobsCOM.Company Company, ADODB.Recordset migrationRS)
         {
             SAPbobsCOM.Documents salesInvoice = Company.GetBusinessObject(SAPbobsCOM.BoObjectTypes.oDrafts);
             salesInvoice.DocObjectCode = SAPbobsCOM.BoObjectTypes.oInvoices;

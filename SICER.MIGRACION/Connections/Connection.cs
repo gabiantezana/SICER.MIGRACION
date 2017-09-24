@@ -3,9 +3,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace SICER.MIGRACION.Connection
+namespace SICER.MIGRACION.Connections
 {
-    class Connection {
+   public class Connection {
         private readonly Dictionary<string, SAPbobsCOM.Company> companies;
         private const string CONNECTION_FILE = "\\conexion.xml";
         private const string FILE_OUTPUT_DIRECTION = "C:\\";

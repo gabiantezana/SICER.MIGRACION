@@ -3,32 +3,42 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Data.SqlClient;
+using SICER.MIGRACION.Helper;
+using SICER.MIGRACION.Connections;
+using SICER.MIGRACION.Model;
 
 namespace SICER.MIGRACION.Documents
 {
-    class JournalEntries : MDocument {
+    class JournalEntries : MDocument
+    {
 
-        private const string JOURNAL_ENTRY_HEADER_SP = "SEI_STW_JournalEntriesHeader";
-        private const string JOURNAL_ENTRY_LINES_SP = "SEI_STW_JournalEntriesLines";
+        private const string JOURNAL_ENTRY_HEADER_SP = nameof(SICER_INT_SBOEntities.MSS_SP_SICER_JOURNALENTRIESHEADER); //"SEI_STW_JournalEntriesHeader";
+        private const string JOURNAL_ENTRY_LINES_SP = nameof(SICER_INT_SBOEntities.MSS_SP_SICER_JOURNALENTRIESLINES); //"SEI_STW_JournalEntriesLines";
         private const string JOURNAL_ENTRY_TABLE = "CabeceraAsientos";
         private const string JOURNAL_KEY_FIELD = "IdAsiento";
 
         public JournalEntries(SAPbobsCOM.Company Company)
-            : base(Company, JOURNAL_ENTRY_HEADER_SP, JOURNAL_KEY_FIELD) {
+            : base(Company, JOURNAL_ENTRY_HEADER_SP, JOURNAL_KEY_FIELD)
+        {
         }
 
-        protected override void update(SAPbobsCOM.Company Company, bool successful, string id,string Code) {
+        protected override void update(SAPbobsCOM.Company Company, bool successful, string id, string Code)
+        {
             string updateString = "UPDATE " + JOURNAL_ENTRY_TABLE + " SET INT_Estado = '";
-            if (successful) {
+            if (successful)
+            {
                 updateString += "P' ";
-            } else {
-                updateString += "E', INT_Error = '" + Company.GetLastErrorDescription().Replace('\'',' ') + "' ";
+            }
+            else
+            {
+                updateString += "E', INT_Error = '" + Company.GetLastErrorDescription().Replace('\'', ' ') + "' ";
             }
             updateString += "WHERE IdAsiento = " + id;
             updateRS.DoQuery(updateString);
         }
 
-        protected override bool migrateDocuments(SAPbobsCOM.Company Company, SAPbobsCOM.Recordset migrationRS) {
+        protected override bool migrateDocuments(SAPbobsCOM.Company Company, ADODB.Recordset migrationRS)
+        {
             SAPbobsCOM.JournalEntries journalEntry = Company.GetBusinessObject(SAPbobsCOM.BoObjectTypes.oJournalEntries);
             string taxDate = migrationRS.Fields.Item("TaxDate").Value;
             string dueDate = migrationRS.Fields.Item("DueDate").Value;
@@ -42,13 +52,21 @@ namespace SICER.MIGRACION.Documents
             journalEntry.Memo = migrationRS.Fields.Item("Memo").Value;
             //journalEntry.DocumentType = migrationRS.Fields.Item("Type").Value;
 
-            SAPbobsCOM.Recordset linesRS = Company.GetBusinessObject(SAPbobsCOM.BoObjectTypes.BoRecordset);
-            linesRS.DoQuery(JOURNAL_ENTRY_LINES_SP + " " + migrationRS.Fields.Item("IdAsiento").Value);
-            while (!linesRS.EoF) {
-                if (!linesRS.BoF) { journalEntry.Lines.Add(); }
+            String query = JOURNAL_ENTRY_LINES_SP + " " + migrationRS.Fields.Item("IdAsiento").Value;
+            ADODB.Recordset linesRS = new SQLConnection().DoQuery(query);
+
+
+            while (!linesRS.EOF)
+            {
+                if (!linesRS.BOF)
+                {
+                    journalEntry.Lines.Add();
+                }
                 journalEntry.Lines.AccountCode = linesRS.Fields.Item("AccountCode").Value;
+
                 if (String.Equals(linesRS.Fields.Item("FCCurrency").Value, "S/") == false)
                     journalEntry.Lines.FCCurrency = linesRS.Fields.Item("FCCurrency").Value;
+
                 journalEntry.Lines.Debit = linesRS.Fields.Item("Debit").Value;
                 journalEntry.Lines.Credit = linesRS.Fields.Item("Credit").Value;
                 journalEntry.Lines.FCDebit = linesRS.Fields.Item("FCDebit").Value;
