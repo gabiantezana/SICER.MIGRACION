@@ -1,0 +1,803 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+      <Schema Namespace="SICER_INT_SBOModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <Function Name="MSS_SP_SICER_ACCOUNTINFO" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="Curr" Type="nvarchar" Mode="In" />
+          <Parameter Name="Date" Type="date" Mode="In" />
+          <Parameter Name="CC5" Type="nvarchar" Mode="In" />
+        </Function>
+        <Function Name="MSS_SP_SICER_ACCOUNTPAYMENTS" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo" />
+        <Function Name="MSS_SP_SICER_BUSINESSPARTNERS" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo" />
+        <Function Name="MSS_SP_SICER_CUENTASPAGO" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="DocType" Type="int" Mode="In" />
+          <Parameter Name="ExCode" Type="int" Mode="In" />
+        </Function>
+        <Function Name="MSS_SP_SICER_CUENTASVALIDAS" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo" />
+        <Function Name="MSS_SP_SICER_DATOSERETAPA1" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="ExCode" Type="int" Mode="In" />
+        </Function>
+        <Function Name="MSS_SP_SICER_FACTURACIONWEB" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo" />
+        <Function Name="MSS_SP_SICER_FACTURACIONWEBDETALLE" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="ExCode" Type="int" Mode="In" />
+          <Parameter Name="DocType" Type="int" Mode="In" />
+          <Parameter Name="Etapa" Type="int" Mode="In" />
+          <Parameter Name="IdFactura" Type="int" Mode="In" />
+        </Function>
+        <Function Name="MSS_SP_SICER_FACTURASRENDIDASER" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="ExCode" Type="int" Mode="In" />
+          <Parameter Name="Curr" Type="char" Mode="In" />
+        </Function>
+        <Function Name="MSS_SP_SICER_GRUPOSFACTURACION" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo" />
+        <Function Name="MSS_SP_SICER_JOURNALENTRIESHEADER" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo" />
+        <Function Name="MSS_SP_SICER_JOURNALENTRIESLINES" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="Id" Type="int" Mode="In" />
+        </Function>
+        <Function Name="MSS_SP_SICER_PAYROLLINVOICES" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo" />
+        <Function Name="MSS_SP_SICER_PENDINGINVOICES" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo" />
+        <Function Name="MSS_SP_SICER_PRIMERAETAPA" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="ExCode" Type="int" Mode="In" />
+        </Function>
+        <Function Name="MSS_SP_SICER_PURCHASEINVOICES" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo" />
+        <Function Name="MSS_SP_SICER_PURCHASEINVOICESLINES" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="Id" Type="int" Mode="In" />
+        </Function>
+        <Function Name="MSS_SP_SICER_REFACTURABLES" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo" />
+        <Function Name="MSS_SP_SICER_RENDICIONESSEGUNDAETAPA" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="ExCode" Type="int" Mode="In" />
+          <Parameter Name="Curr" Type="char" Mode="In" />
+        </Function>
+        <Function Name="MSS_SP_SICER_TRASLADOFACTURAS" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo" />
+        <Function Name="MSS_SP_SICER_WEBUDOINVOICES" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo" />
+        <EntityContainer Name="SICER_INT_SBOModelStoreContainer" />
+      </Schema>
+    </edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="SICER_INT_SBOModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityContainer Name="SICER_INT_SBOEntities" annotation:LazyLoadingEnabled="true" >
+          <FunctionImport Name="MSS_SP_SICER_ACCOUNTINFO" ReturnType="Collection(SICER_INT_SBOModel.MSS_SP_SICER_ACCOUNTINFO_Result)">
+            <Parameter Name="Curr" Mode="In" Type="String" />
+            <Parameter Name="Date" Mode="In" Type="DateTime" />
+            <Parameter Name="CC5" Mode="In" Type="String" />
+          </FunctionImport>
+          <FunctionImport Name="MSS_SP_SICER_ACCOUNTPAYMENTS" ReturnType="Collection(SICER_INT_SBOModel.MSS_SP_SICER_ACCOUNTPAYMENTS_Result)" />
+          <FunctionImport Name="MSS_SP_SICER_BUSINESSPARTNERS" ReturnType="Collection(SICER_INT_SBOModel.MSS_SP_SICER_BUSINESSPARTNERS_Result)" />
+          <FunctionImport Name="MSS_SP_SICER_CUENTASPAGO" ReturnType="Collection(SICER_INT_SBOModel.MSS_SP_SICER_CUENTASPAGO_Result)">
+            <Parameter Name="DocType" Mode="In" Type="Int32" />
+            <Parameter Name="ExCode" Mode="In" Type="Int32" />
+          </FunctionImport>
+          <FunctionImport Name="MSS_SP_SICER_CUENTASVALIDAS" />
+          <FunctionImport Name="MSS_SP_SICER_DATOSERETAPA1" ReturnType="Collection(SICER_INT_SBOModel.MSS_SP_SICER_DATOSERETAPA1_Result)">
+            <Parameter Name="ExCode" Mode="In" Type="Int32" />
+          </FunctionImport>
+          <FunctionImport Name="MSS_SP_SICER_FACTURACIONWEB" ReturnType="Collection(SICER_INT_SBOModel.MSS_SP_SICER_FACTURACIONWEB_Result)" />
+          <FunctionImport Name="MSS_SP_SICER_FACTURACIONWEBDETALLE" ReturnType="Collection(SICER_INT_SBOModel.MSS_SP_SICER_FACTURACIONWEBDETALLE_Result)">
+            <Parameter Name="ExCode" Mode="In" Type="Int32" />
+            <Parameter Name="DocType" Mode="In" Type="Int32" />
+            <Parameter Name="Etapa" Mode="In" Type="Int32" />
+            <Parameter Name="IdFactura" Mode="In" Type="Int32" />
+          </FunctionImport>
+          <FunctionImport Name="MSS_SP_SICER_FACTURASRENDIDASER" ReturnType="Collection(SICER_INT_SBOModel.MSS_SP_SICER_FACTURASRENDIDASER_Result)">
+            <Parameter Name="ExCode" Mode="In" Type="Int32" />
+            <Parameter Name="Curr" Mode="In" Type="String" />
+          </FunctionImport>
+          <FunctionImport Name="MSS_SP_SICER_GRUPOSFACTURACION" />
+          <FunctionImport Name="MSS_SP_SICER_JOURNALENTRIESHEADER" ReturnType="Collection(SICER_INT_SBOModel.MSS_SP_SICER_JOURNALENTRIESHEADER_Result)" />
+          <FunctionImport Name="MSS_SP_SICER_JOURNALENTRIESLINES" ReturnType="Collection(SICER_INT_SBOModel.MSS_SP_SICER_JOURNALENTRIESLINES_Result)">
+            <Parameter Name="Id" Mode="In" Type="Int32" />
+          </FunctionImport>
+          <FunctionImport Name="MSS_SP_SICER_PAYROLLINVOICES" ReturnType="Collection(SICER_INT_SBOModel.MSS_SP_SICER_PAYROLLINVOICES_Result)" />
+          <FunctionImport Name="MSS_SP_SICER_PENDINGINVOICES" ReturnType="Collection(SICER_INT_SBOModel.MSS_SP_SICER_PENDINGINVOICES_Result)" />
+          <FunctionImport Name="MSS_SP_SICER_PRIMERAETAPA" ReturnType="Collection(Int32)">
+            <Parameter Name="ExCode" Mode="In" Type="Int32" />
+          </FunctionImport>
+          <FunctionImport Name="MSS_SP_SICER_PURCHASEINVOICES" ReturnType="Collection(SICER_INT_SBOModel.MSS_SP_SICER_PURCHASEINVOICES_Result)" />
+          <FunctionImport Name="MSS_SP_SICER_PURCHASEINVOICESLINES" ReturnType="Collection(SICER_INT_SBOModel.MSS_SP_SICER_PURCHASEINVOICESLINES_Result)">
+            <Parameter Name="Id" Mode="In" Type="Int32" />
+          </FunctionImport>
+          <FunctionImport Name="MSS_SP_SICER_REFACTURABLES" ReturnType="Collection(SICER_INT_SBOModel.MSS_SP_SICER_REFACTURABLES_Result)" />
+          <FunctionImport Name="MSS_SP_SICER_RENDICIONESSEGUNDAETAPA" ReturnType="Collection(SICER_INT_SBOModel.MSS_SP_SICER_RENDICIONESSEGUNDAETAPA_Result)">
+            <Parameter Name="ExCode" Mode="In" Type="Int32" />
+            <Parameter Name="Curr" Mode="In" Type="String" />
+          </FunctionImport>
+          <FunctionImport Name="MSS_SP_SICER_TRASLADOFACTURAS" />
+          <FunctionImport Name="MSS_SP_SICER_WEBUDOINVOICES" ReturnType="Collection(SICER_INT_SBOModel.MSS_SP_SICER_WEBUDOINVOICES_Result)" />
+        </EntityContainer>
+        <ComplexType Name="MSS_SP_SICER_ACCOUNTINFO_Result">
+          <Property Type="String" Name="U_Asociada" Nullable="true" MaxLength="15" />
+          <Property Type="String" Name="U_Detalle" Nullable="true" MaxLength="15" />
+          <Property Type="Decimal" Name="Rate" Nullable="true" Precision="19" Scale="6" />
+          <Property Type="Decimal" Name="Multiplier" Nullable="true" Precision="19" Scale="6" />
+        </ComplexType>
+        <ComplexType Name="MSS_SP_SICER_ACCOUNTPAYMENTS_Result">
+          <Property Type="Decimal" Name="Monto" Nullable="true" Precision="19" Scale="2" />
+          <Property Type="String" Name="CuentaControl" Nullable="true" MaxLength="15" />
+          <Property Type="String" Name="CuentaDetalle" Nullable="true" MaxLength="15" />
+          <Property Type="String" Name="Nombre" Nullable="true" MaxLength="100" />
+          <Property Type="String" Name="Moneda" Nullable="true" MaxLength="3" />
+          <Property Type="String" Name="Memo" Nullable="true" MaxLength="50" />
+          <Property Type="Int32" Name="IdPago" Nullable="true" />
+        </ComplexType>
+        <ComplexType Name="MSS_SP_SICER_BUSINESSPARTNERS_Result">
+          <Property Type="String" Name="Code" Nullable="true" MaxLength="4" />
+          <Property Type="String" Name="CardCode" Nullable="true" MaxLength="15" />
+          <Property Type="String" Name="CardName" Nullable="true" MaxLength="100" />
+          <Property Type="String" Name="CardType" Nullable="true" MaxLength="1" />
+          <Property Type="String" Name="LicTradNum" Nullable="true" MaxLength="32" />
+          <Property Type="String" Name="CntPerson" Nullable="true" MaxLength="200" />
+          <Property Type="String" Name="DebitAccount" Nullable="true" MaxLength="15" />
+          <Property Type="Int16" Name="GroupCode" Nullable="true" />
+          <Property Type="String" Name="Address" Nullable="true" MaxLength="100" />
+          <Property Type="String" Name="Phone1" Nullable="true" MaxLength="20" />
+          <Property Type="String" Name="Phone2" Nullable="true" MaxLength="20" />
+          <Property Type="String" Name="Cellular" Nullable="true" MaxLength="20" />
+          <Property Type="String" Name="E_Mail" Nullable="true" MaxLength="100" />
+          <Property Type="String" Name="U_BPP_BPNO" Nullable="true" MaxLength="30" />
+          <Property Type="String" Name="U_BPP_BPN2" Nullable="true" MaxLength="30" />
+          <Property Type="String" Name="U_BPP_BPAP" Nullable="true" MaxLength="30" />
+          <Property Type="String" Name="U_BPP_BPAM" Nullable="true" MaxLength="30" />
+          <Property Type="String" Name="U_BPP_BPTP" Nullable="true" MaxLength="10" />
+          <Property Type="String" Name="U_BPP_BPTD" Nullable="true" MaxLength="2" />
+          <Property Type="String" Name="U_ProCode" Nullable="true" MaxLength="8" />
+          <Property Type="String" Name="U_BankCode" Nullable="true" MaxLength="30" />
+          <Property Type="String" Name="U_BankAcct" Nullable="true" MaxLength="50" />
+          <Property Type="String" Name="U_BankCodeCTS" Nullable="true" MaxLength="30" />
+          <Property Type="String" Name="U_BankAcctCTS" Nullable="true" MaxLength="50" />
+          <Property Type="String" Name="U_DateIn" Nullable="true" MaxLength="8" />
+          <Property Type="String" Name="U_DateCe" Nullable="true" MaxLength="8" />
+          <Property Type="String" Name="INT_Estado" Nullable="true" MaxLength="1" />
+          <Property Type="String" Name="INT_Error" Nullable="true" MaxLength="200" />
+        </ComplexType>
+        <ComplexType Name="MSS_SP_SICER_CUENTASPAGO_Result">
+          <Property Type="String" Name="AcctCode" Nullable="true" MaxLength="15" />
+          <Property Type="Int32" Name="Series" Nullable="false" />
+        </ComplexType>
+        <ComplexType Name="MSS_SP_SICER_DATOSERETAPA1_Result">
+          <Property Type="String" Name="CardCode" Nullable="true" MaxLength="20" />
+          <Property Type="String" Name="JournalMemo" Nullable="true" MaxLength="50" />
+          <Property Type="String" Name="U_Asociada" Nullable="true" MaxLength="20" />
+          <Property Type="String" Name="U_Detalle" Nullable="true" MaxLength="20" />
+          <Property Type="String" Name="MetodoPago" Nullable="true" MaxLength="20" />
+        </ComplexType>
+        <ComplexType Name="MSS_SP_SICER_FACTURACIONWEB_Result">
+          <Property Type="String" Name="Code" Nullable="true" MaxLength="20" />
+          <Property Type="Int32" Name="ExCode" Nullable="true" />
+          <Property Type="Int32" Name="IdFactura" Nullable="true" />
+          <Property Type="String" Name="CardCode" Nullable="true" MaxLength="20" />
+          <Property Type="String" Name="CardName" Nullable="true" MaxLength="100" />
+          <Property Type="Int32" Name="Series" Nullable="true" />
+          <Property Type="String" Name="CntPerson" Nullable="true" MaxLength="100" />
+          <Property Type="String" Name="DocCurrency" Nullable="true" MaxLength="3" />
+          <Property Type="String" Name="DocDate" Nullable="true" MaxLength="8" />
+          <Property Type="String" Name="DocDueDate" Nullable="true" MaxLength="8" />
+          <Property Type="String" Name="TaxDate" Nullable="true" MaxLength="8" />
+          <Property Type="String" Name="JournalMemo" Nullable="true" MaxLength="50" />
+          <Property Type="String" Name="MetodoPago" Nullable="true" MaxLength="20" />
+          <Property Type="String" Name="NumAtCard" Nullable="true" MaxLength="32" />
+          <Property Type="String" Name="ControlAccount" Nullable="true" MaxLength="20" />
+          <Property Type="Int32" Name="DocEntry" Nullable="true" />
+          <Property Type="String" Name="INT_Estado" Nullable="true" MaxLength="1" />
+          <Property Type="String" Name="INT_Error" Nullable="true" MaxLength="200" />
+          <Property Type="String" Name="Refacturable" Nullable="true" MaxLength="2" />
+          <Property Type="String" Name="FolioPref" Nullable="true" MaxLength="4" />
+          <Property Type="Int32" Name="FolioNum" Nullable="true" />
+          <Property Type="Int32" Name="TipoDocumento" Nullable="true" />
+          <Property Type="String" Name="Asunto" Nullable="true" MaxLength="100" />
+          <Property Type="Int32" Name="Etapa" Nullable="true" />
+          <Property Type="String" Name="INT_Ref1" Nullable="true" MaxLength="1" />
+          <Property Type="Decimal" Name="DocRate" Nullable="true" Precision="18" Scale="4" />
+          <Property Type="Int32" Name="RendicionesTotales" Nullable="true" />
+          <Property Type="Int32" Name="DocSubType" Nullable="true" />
+          <Property Type="String" Name="U_BPP_MDTD" Nullable="true" MaxLength="2" />
+        </ComplexType>
+        <ComplexType Name="MSS_SP_SICER_FACTURACIONWEBDETALLE_Result">
+          <Property Type="Int32" Name="IdFactura" Nullable="true" />
+          <Property Type="String" Name="AccountCode" Nullable="true" MaxLength="20" />
+          <Property Type="String" Name="TaxCode" Nullable="true" MaxLength="20" />
+          <Property Type="Decimal" Name="LineTotal" Nullable="true" Precision="18" Scale="2" />
+          <Property Type="String" Name="CostingCode" Nullable="true" MaxLength="8" />
+          <Property Type="String" Name="CostingCode2" Nullable="true" MaxLength="8" />
+          <Property Type="String" Name="CostingCode3" Nullable="true" MaxLength="8" />
+          <Property Type="String" Name="CostingCode4" Nullable="true" MaxLength="8" />
+          <Property Type="String" Name="CostingCode5" Nullable="true" MaxLength="8" />
+          <Property Type="String" Name="Description" Nullable="true" MaxLength="100" />
+          <Property Type="Int32" Name="Etapa" Nullable="true" />
+          <Property Type="Int32" Name="TipoDocumento" Nullable="true" />
+          <Property Type="Int32" Name="ExCode" Nullable="true" />
+        </ComplexType>
+        <ComplexType Name="MSS_SP_SICER_FACTURASRENDIDASER_Result">
+          <Property Type="Decimal" Name="DocTotal" Nullable="true" Precision="38" Scale="6" />
+          <Property Type="Int32" Name="Count" Nullable="true" />
+        </ComplexType>
+        <ComplexType Name="MSS_SP_SICER_JOURNALENTRIESHEADER_Result">
+          <Property Type="String" Name="Code" Nullable="true" MaxLength="10" />
+          <Property Type="Int32" Name="IdAsiento" Nullable="true" />
+          <Property Type="Int32" Name="IdEmpresa" Nullable="true" />
+          <Property Type="String" Name="TaxDate" Nullable="true" MaxLength="8" />
+          <Property Type="String" Name="ReferenceDate" Nullable="true" MaxLength="8" />
+          <Property Type="String" Name="DueDate" Nullable="true" MaxLength="8" />
+          <Property Type="String" Name="Ref1" Nullable="true" MaxLength="100" />
+          <Property Type="String" Name="Ref2" Nullable="true" MaxLength="100" />
+          <Property Type="String" Name="Ref3" Nullable="true" MaxLength="27" />
+          <Property Type="String" Name="Memo" Nullable="true" MaxLength="100" />
+          <Property Type="String" Name="TransCode" Nullable="true" MaxLength="4" />
+          <Property Type="Int32" Name="TransId" Nullable="true" />
+          <Property Type="String" Name="INT_Estado" Nullable="true" MaxLength="1" />
+          <Property Type="String" Name="INT_Error" Nullable="true" MaxLength="200" />
+          <Property Type="String" Name="CardCode" Nullable="true" MaxLength="20" />
+        </ComplexType>
+        <ComplexType Name="MSS_SP_SICER_JOURNALENTRIESLINES_Result">
+          <Property Type="Int32" Name="IdAsiento" Nullable="true" />
+          <Property Type="String" Name="AccountCode" Nullable="true" MaxLength="15" />
+          <Property Type="String" Name="FCCurrency" Nullable="true" MaxLength="3" />
+          <Property Type="Decimal" Name="Debit" Nullable="true" Precision="18" Scale="2" />
+          <Property Type="Decimal" Name="Credit" Nullable="true" Precision="18" Scale="2" />
+          <Property Type="Decimal" Name="FCDebit" Nullable="true" Precision="18" Scale="2" />
+          <Property Type="Decimal" Name="FCCredit" Nullable="true" Precision="18" Scale="2" />
+          <Property Type="String" Name="Reference1" Nullable="true" MaxLength="50" />
+          <Property Type="String" Name="Reference2" Nullable="true" MaxLength="50" />
+          <Property Type="String" Name="Reference3" Nullable="true" MaxLength="20" />
+          <Property Type="String" Name="LineMemo" Nullable="true" MaxLength="50" />
+          <Property Type="String" Name="CostingCode" Nullable="false" MaxLength="8" />
+          <Property Type="String" Name="CostingCode2" Nullable="false" MaxLength="8" />
+          <Property Type="String" Name="CostingCode3" Nullable="false" MaxLength="8" />
+          <Property Type="String" Name="CostingCode4" Nullable="false" MaxLength="8" />
+          <Property Type="String" Name="CostingCode5" Nullable="false" MaxLength="8" />
+          <Property Type="String" Name="CardCode" Nullable="true" MaxLength="20" />
+        </ComplexType>
+        <ComplexType Name="MSS_SP_SICER_PAYROLLINVOICES_Result">
+          <Property Type="Int32" Name="IdFactura" Nullable="true" />
+          <Property Type="String" Name="CardCode" Nullable="true" MaxLength="15" />
+          <Property Type="String" Name="DocCurrency" Nullable="true" MaxLength="3" />
+          <Property Type="String" Name="CostingCode" Nullable="true" MaxLength="8" />
+          <Property Type="String" Name="CostingCode2" Nullable="true" MaxLength="8" />
+          <Property Type="String" Name="CostingCode3" Nullable="true" MaxLength="8" />
+          <Property Type="String" Name="CostingCode4" Nullable="true" MaxLength="8" />
+          <Property Type="String" Name="CostingCode5" Nullable="true" MaxLength="8" />
+          <Property Type="Int32" Name="Año" Nullable="true" />
+          <Property Type="Int32" Name="Mes" Nullable="true" />
+          <Property Type="Decimal" Name="TipoCambio" Nullable="true" Precision="18" Scale="2" />
+          <Property Type="String" Name="Aprobador" Nullable="true" MaxLength="20" />
+          <Property Type="Decimal" Name="IM_REMU_AFEC" Nullable="true" Precision="18" Scale="2" />
+          <Property Type="Decimal" Name="IM_REMU_INAF" Nullable="true" Precision="18" Scale="2" />
+          <Property Type="Decimal" Name="IM_BRUT_FACT" Nullable="true" Precision="18" Scale="2" />
+          <Property Type="Decimal" Name="IM_NETO_FACT" Nullable="true" Precision="18" Scale="2" />
+          <Property Type="Decimal" Name="IM_BRUT_ANTI" Nullable="true" Precision="18" Scale="2" />
+          <Property Type="Decimal" Name="IM_BRUT_IGV" Nullable="true" Precision="18" Scale="2" />
+          <Property Type="Decimal" Name="SAP_IMPREFAC" Nullable="true" Precision="18" Scale="2" />
+          <Property Type="String" Name="TI_SITU" Nullable="true" MaxLength="8" />
+          <Property Type="String" Name="FE_APRO" Nullable="true" MaxLength="8" />
+          <Property Type="String" Name="TipoFacturacion" Nullable="true" MaxLength="50" />
+          <Property Type="String" Name="INT_Estado" Nullable="true" MaxLength="1" />
+          <Property Type="String" Name="INT_Fecha" Nullable="true" MaxLength="8" />
+          <Property Type="String" Name="AccountCode" Nullable="true" MaxLength="20" />
+          <Property Type="String" Name="DocDate" Nullable="true" MaxLength="8" />
+          <Property Type="String" Name="DocType" Nullable="true" MaxLength="20" />
+          <Property Type="String" Name="Code" Nullable="true" MaxLength="4" />
+          <Property Type="String" Name="INT_Error" Nullable="true" MaxLength="200" />
+          <Property Type="String" Name="AccountCodeDet" Nullable="true" MaxLength="20" />
+          <Property Type="Int32" Name="Serie" Nullable="true" />
+          <Property Type="Decimal" Name="FactorRefacturacion" Nullable="true" Precision="19" Scale="2" />
+          <Property Type="Int32" Name="Concepto" Nullable="true" />
+          <Property Type="String" Name="ST_PLAN_OTRO" Nullable="true" MaxLength="1" />
+          <Property Type="String" Name="CO_PLAN_OTRO" Nullable="true" MaxLength="20" />
+          <Property Type="Decimal" Name="FA_OTRO_AFEC" Nullable="true" Precision="19" Scale="2" />
+          <Property Type="Decimal" Name="FA_OTRO_INAF" Nullable="true" Precision="19" Scale="2" />
+          <Property Type="Decimal" Name="FA_OTRO_VACA" Nullable="true" Precision="19" Scale="2" />
+          <Property Type="String" Name="NO_GLOS_SAP1" Nullable="true" MaxLength="500" />
+          <Property Type="String" Name="CO_GRUP_FACT" Nullable="true" MaxLength="20" />
+          <Property Type="String" Name="Description" Nullable="true" MaxLength="200" />
+          <Property Type="Decimal" Name="IM_OTRO_AFEC" Nullable="true" Precision="16" Scale="4" />
+          <Property Type="Decimal" Name="IM_OTRO_INAF" Nullable="true" Precision="16" Scale="4" />
+          <Property Type="Decimal" Name="IM_OTRO_VACA" Nullable="true" Precision="16" Scale="4" />
+          <Property Type="Int32" Name="DocEntry" Nullable="true" />
+          <Property Type="Int32" Name="CondicionPago" Nullable="true" />
+        </ComplexType>
+        <ComplexType Name="MSS_SP_SICER_PENDINGINVOICES_Result">
+          <Property Type="Int32" Name="IdFactura" Nullable="true" />
+          <Property Type="String" Name="CardCode" Nullable="true" MaxLength="15" />
+          <Property Type="String" Name="DocCurrency" Nullable="true" MaxLength="3" />
+          <Property Type="String" Name="CostingCode" Nullable="true" MaxLength="8" />
+          <Property Type="String" Name="CostingCode2" Nullable="true" MaxLength="8" />
+          <Property Type="String" Name="CostingCode3" Nullable="true" MaxLength="8" />
+          <Property Type="String" Name="CostingCode4" Nullable="true" MaxLength="8" />
+          <Property Type="String" Name="CostingCode5" Nullable="true" MaxLength="8" />
+          <Property Type="Int32" Name="Año" Nullable="true" />
+          <Property Type="Int32" Name="Mes" Nullable="true" />
+          <Property Type="Decimal" Name="TipoCambio" Nullable="true" Precision="19" Scale="6" />
+          <Property Type="String" Name="Aprobador" Nullable="true" MaxLength="20" />
+          <Property Type="Decimal" Name="IM_REMU_AFEC" Nullable="true" Precision="18" Scale="2" />
+          <Property Type="Decimal" Name="IM_REMU_INAF" Nullable="true" Precision="18" Scale="2" />
+          <Property Type="Decimal" Name="IM_BRUT_FACT" Nullable="true" Precision="18" Scale="2" />
+          <Property Type="Decimal" Name="IM_NETO_FACT" Nullable="true" Precision="18" Scale="2" />
+          <Property Type="Decimal" Name="IM_BRUT_ANTI" Nullable="true" Precision="18" Scale="2" />
+          <Property Type="Decimal" Name="IM_BRUT_IGV" Nullable="true" Precision="18" Scale="2" />
+          <Property Type="Decimal" Name="SAP_IMPREFAC" Nullable="true" Precision="18" Scale="2" />
+          <Property Type="String" Name="TI_SITU" Nullable="true" MaxLength="8" />
+          <Property Type="String" Name="FE_APRO" Nullable="true" MaxLength="8" />
+          <Property Type="String" Name="TipoFacturacion" Nullable="true" MaxLength="50" />
+          <Property Type="String" Name="INT_Estado" Nullable="true" MaxLength="1" />
+          <Property Type="String" Name="INT_Fecha" Nullable="true" MaxLength="8" />
+          <Property Type="String" Name="AccountCode" Nullable="true" MaxLength="20" />
+          <Property Type="DateTime" Name="DocDate" Nullable="true" />
+          <Property Type="String" Name="DocType" Nullable="true" MaxLength="20" />
+          <Property Type="String" Name="Code" Nullable="true" MaxLength="4" />
+          <Property Type="String" Name="INT_Error" Nullable="true" MaxLength="200" />
+          <Property Type="String" Name="AccountCodeDet" Nullable="true" MaxLength="20" />
+          <Property Type="Int32" Name="Serie" Nullable="true" />
+          <Property Type="Decimal" Name="FactorRefacturacion" Nullable="true" Precision="19" Scale="2" />
+          <Property Type="Int32" Name="Concepto" Nullable="true" />
+          <Property Type="String" Name="ST_PLAN_OTRO" Nullable="true" MaxLength="1" />
+          <Property Type="String" Name="CO_PLAN_OTRO" Nullable="true" MaxLength="20" />
+          <Property Type="Decimal" Name="FA_OTRO_AFEC" Nullable="true" Precision="19" Scale="2" />
+          <Property Type="Decimal" Name="FA_OTRO_INAF" Nullable="true" Precision="19" Scale="2" />
+          <Property Type="Decimal" Name="FA_OTRO_VACA" Nullable="true" Precision="19" Scale="2" />
+          <Property Type="String" Name="NO_GLOS_SAP1" Nullable="true" MaxLength="500" />
+          <Property Type="String" Name="CO_GRUP_FACT" Nullable="true" MaxLength="20" />
+          <Property Type="String" Name="Description" Nullable="true" MaxLength="200" />
+          <Property Type="Int32" Name="DocEntry" Nullable="true" />
+        </ComplexType>
+        <ComplexType Name="MSS_SP_SICER_PURCHASEINVOICES_Result">
+          <Property Type="String" Name="Code" Nullable="true" MaxLength="20" />
+          <Property Type="Int32" Name="IdFactura" Nullable="true" />
+          <Property Type="String" Name="CardCode" Nullable="true" MaxLength="20" />
+          <Property Type="String" Name="CardName" Nullable="true" MaxLength="100" />
+          <Property Type="Int32" Name="Series" Nullable="true" />
+          <Property Type="String" Name="CntPerson" Nullable="true" MaxLength="100" />
+          <Property Type="String" Name="DocCurrency" Nullable="true" MaxLength="3" />
+          <Property Type="String" Name="DocDate" Nullable="true" MaxLength="8" />
+          <Property Type="String" Name="DocDueDate" Nullable="true" MaxLength="8" />
+          <Property Type="String" Name="TaxDate" Nullable="true" MaxLength="8" />
+          <Property Type="String" Name="JournalMemo" Nullable="true" MaxLength="50" />
+          <Property Type="String" Name="MetodoPago" Nullable="true" MaxLength="50" />
+          <Property Type="String" Name="NumAtCard" Nullable="true" MaxLength="32" />
+          <Property Type="String" Name="ControlAccount" Nullable="true" MaxLength="20" />
+          <Property Type="Int32" Name="DocEntry" Nullable="true" />
+          <Property Type="String" Name="INT_Estado" Nullable="true" MaxLength="1" />
+          <Property Type="String" Name="INT_Error" Nullable="true" MaxLength="200" />
+          <Property Type="String" Name="Refacturable" Nullable="true" MaxLength="2" />
+        </ComplexType>
+        <ComplexType Name="MSS_SP_SICER_PURCHASEINVOICESLINES_Result">
+          <Property Type="Int32" Name="IdFactura" Nullable="true" />
+          <Property Type="String" Name="AccountCode" Nullable="true" MaxLength="20" />
+          <Property Type="String" Name="TaxCode" Nullable="true" MaxLength="20" />
+          <Property Type="Decimal" Name="LineTotal" Nullable="true" Precision="18" Scale="2" />
+          <Property Type="String" Name="CostingCode" Nullable="true" MaxLength="8" />
+          <Property Type="String" Name="CostingCode2" Nullable="true" MaxLength="8" />
+          <Property Type="String" Name="CostingCode3" Nullable="true" MaxLength="8" />
+          <Property Type="String" Name="CostingCode4" Nullable="true" MaxLength="8" />
+          <Property Type="String" Name="CostingCode5" Nullable="true" MaxLength="8" />
+          <Property Type="String" Name="Description" Nullable="true" MaxLength="100" />
+        </ComplexType>
+        <ComplexType Name="MSS_SP_SICER_REFACTURABLES_Result">
+          <Property Type="Int32" Name="DocEntry" Nullable="false" />
+          <Property Type="Decimal" Name="Multiplier" Nullable="true" Precision="19" Scale="6" />
+          <Property Type="Int32" Name="ObjType" Nullable="true" />
+        </ComplexType>
+        <ComplexType Name="MSS_SP_SICER_RENDICIONESSEGUNDAETAPA_Result">
+          <Property Type="Decimal" Name="DocTotal" Nullable="true" Precision="38" Scale="6" />
+          <Property Type="Decimal" Name="Rate" Nullable="true" Precision="19" Scale="6" />
+          <Property Type="Int16" Name="Series" Nullable="true" />
+          <Property Type="Int32" Name="Folio" Nullable="true" />
+        </ComplexType>
+        <ComplexType Name="MSS_SP_SICER_WEBUDOINVOICES_Result">
+          <Property Type="Int32" Name="DocEntry" Nullable="false" />
+          <Property Type="String" Name="CardCode" Nullable="true" MaxLength="15" />
+          <Property Type="String" Name="DocDate" Nullable="true" MaxLength="8" />
+          <Property Type="Decimal" Name="DocRate" Nullable="true" Precision="19" Scale="6" />
+          <Property Type="Int32" Name="TipoDocumento" Nullable="true" />
+          <Property Type="Int32" Name="ExCode" Nullable="true" />
+          <Property Type="String" Name="DocCurrency" Nullable="true" MaxLength="3" />
+          <Property Type="Int32" Name="Etapa" Nullable="true" />
+          <Property Type="String" Name="Asunto" Nullable="true" MaxLength="100" />
+          <Property Type="String" Name="Description" Nullable="true" MaxLength="100" />
+          <Property Type="Decimal" Name="MonBruto" Nullable="true" Precision="19" Scale="6" />
+          <Property Type="String" Name="CostingCode" Nullable="true" MaxLength="8" />
+          <Property Type="String" Name="CostingCode2" Nullable="true" MaxLength="8" />
+          <Property Type="String" Name="CostingCode3" Nullable="true" MaxLength="8" />
+          <Property Type="String" Name="CostingCode4" Nullable="true" MaxLength="8" />
+          <Property Type="String" Name="CostingCode5" Nullable="true" MaxLength="8" />
+          <Property Type="String" Name="JournalMemo" Nullable="true" MaxLength="50" />
+        </ComplexType>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="SICER_INT_SBOModelStoreContainer" CdmEntityContainer="SICER_INT_SBOEntities" >
+          <FunctionImportMapping FunctionImportName="MSS_SP_SICER_ACCOUNTINFO" FunctionName="SICER_INT_SBOModel.Store.MSS_SP_SICER_ACCOUNTINFO">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="SICER_INT_SBOModel.MSS_SP_SICER_ACCOUNTINFO_Result">
+                <ScalarProperty Name="U_Asociada" ColumnName="U_Asociada" />
+                <ScalarProperty Name="U_Detalle" ColumnName="U_Detalle" />
+                <ScalarProperty Name="Rate" ColumnName="Rate" />
+                <ScalarProperty Name="Multiplier" ColumnName="Multiplier" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+          <FunctionImportMapping FunctionImportName="MSS_SP_SICER_ACCOUNTPAYMENTS" FunctionName="SICER_INT_SBOModel.Store.MSS_SP_SICER_ACCOUNTPAYMENTS">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="SICER_INT_SBOModel.MSS_SP_SICER_ACCOUNTPAYMENTS_Result">
+                <ScalarProperty Name="Monto" ColumnName="Monto" />
+                <ScalarProperty Name="CuentaControl" ColumnName="CuentaControl" />
+                <ScalarProperty Name="CuentaDetalle" ColumnName="CuentaDetalle" />
+                <ScalarProperty Name="Nombre" ColumnName="Nombre" />
+                <ScalarProperty Name="Moneda" ColumnName="Moneda" />
+                <ScalarProperty Name="Memo" ColumnName="Memo" />
+                <ScalarProperty Name="IdPago" ColumnName="IdPago" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+          <FunctionImportMapping FunctionImportName="MSS_SP_SICER_BUSINESSPARTNERS" FunctionName="SICER_INT_SBOModel.Store.MSS_SP_SICER_BUSINESSPARTNERS">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="SICER_INT_SBOModel.MSS_SP_SICER_BUSINESSPARTNERS_Result">
+                <ScalarProperty Name="Code" ColumnName="Code" />
+                <ScalarProperty Name="CardCode" ColumnName="CardCode" />
+                <ScalarProperty Name="CardName" ColumnName="CardName" />
+                <ScalarProperty Name="CardType" ColumnName="CardType" />
+                <ScalarProperty Name="LicTradNum" ColumnName="LicTradNum" />
+                <ScalarProperty Name="CntPerson" ColumnName="CntPerson" />
+                <ScalarProperty Name="DebitAccount" ColumnName="DebitAccount" />
+                <ScalarProperty Name="GroupCode" ColumnName="GroupCode" />
+                <ScalarProperty Name="Address" ColumnName="Address" />
+                <ScalarProperty Name="Phone1" ColumnName="Phone1" />
+                <ScalarProperty Name="Phone2" ColumnName="Phone2" />
+                <ScalarProperty Name="Cellular" ColumnName="Cellular" />
+                <ScalarProperty Name="E_Mail" ColumnName="E_Mail" />
+                <ScalarProperty Name="U_BPP_BPNO" ColumnName="U_BPP_BPNO" />
+                <ScalarProperty Name="U_BPP_BPN2" ColumnName="U_BPP_BPN2" />
+                <ScalarProperty Name="U_BPP_BPAP" ColumnName="U_BPP_BPAP" />
+                <ScalarProperty Name="U_BPP_BPAM" ColumnName="U_BPP_BPAM" />
+                <ScalarProperty Name="U_BPP_BPTP" ColumnName="U_BPP_BPTP" />
+                <ScalarProperty Name="U_BPP_BPTD" ColumnName="U_BPP_BPTD" />
+                <ScalarProperty Name="U_ProCode" ColumnName="U_ProCode" />
+                <ScalarProperty Name="U_BankCode" ColumnName="U_BankCode" />
+                <ScalarProperty Name="U_BankAcct" ColumnName="U_BankAcct" />
+                <ScalarProperty Name="U_BankCodeCTS" ColumnName="U_BankCodeCTS" />
+                <ScalarProperty Name="U_BankAcctCTS" ColumnName="U_BankAcctCTS" />
+                <ScalarProperty Name="U_DateIn" ColumnName="U_DateIn" />
+                <ScalarProperty Name="U_DateCe" ColumnName="U_DateCe" />
+                <ScalarProperty Name="INT_Estado" ColumnName="INT_Estado" />
+                <ScalarProperty Name="INT_Error" ColumnName="INT_Error" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+          <FunctionImportMapping FunctionImportName="MSS_SP_SICER_CUENTASPAGO" FunctionName="SICER_INT_SBOModel.Store.MSS_SP_SICER_CUENTASPAGO">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="SICER_INT_SBOModel.MSS_SP_SICER_CUENTASPAGO_Result">
+                <ScalarProperty Name="AcctCode" ColumnName="AcctCode" />
+                <ScalarProperty Name="Series" ColumnName="Series" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+          <FunctionImportMapping FunctionImportName="MSS_SP_SICER_CUENTASVALIDAS" FunctionName="SICER_INT_SBOModel.Store.MSS_SP_SICER_CUENTASVALIDAS" />
+          <FunctionImportMapping FunctionImportName="MSS_SP_SICER_DATOSERETAPA1" FunctionName="SICER_INT_SBOModel.Store.MSS_SP_SICER_DATOSERETAPA1">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="SICER_INT_SBOModel.MSS_SP_SICER_DATOSERETAPA1_Result">
+                <ScalarProperty Name="CardCode" ColumnName="CardCode" />
+                <ScalarProperty Name="JournalMemo" ColumnName="JournalMemo" />
+                <ScalarProperty Name="U_Asociada" ColumnName="U_Asociada" />
+                <ScalarProperty Name="U_Detalle" ColumnName="U_Detalle" />
+                <ScalarProperty Name="MetodoPago" ColumnName="MetodoPago" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+          <FunctionImportMapping FunctionImportName="MSS_SP_SICER_FACTURACIONWEB" FunctionName="SICER_INT_SBOModel.Store.MSS_SP_SICER_FACTURACIONWEB">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="SICER_INT_SBOModel.MSS_SP_SICER_FACTURACIONWEB_Result">
+                <ScalarProperty Name="Code" ColumnName="Code" />
+                <ScalarProperty Name="ExCode" ColumnName="ExCode" />
+                <ScalarProperty Name="IdFactura" ColumnName="IdFactura" />
+                <ScalarProperty Name="CardCode" ColumnName="CardCode" />
+                <ScalarProperty Name="CardName" ColumnName="CardName" />
+                <ScalarProperty Name="Series" ColumnName="Series" />
+                <ScalarProperty Name="CntPerson" ColumnName="CntPerson" />
+                <ScalarProperty Name="DocCurrency" ColumnName="DocCurrency" />
+                <ScalarProperty Name="DocDate" ColumnName="DocDate" />
+                <ScalarProperty Name="DocDueDate" ColumnName="DocDueDate" />
+                <ScalarProperty Name="TaxDate" ColumnName="TaxDate" />
+                <ScalarProperty Name="JournalMemo" ColumnName="JournalMemo" />
+                <ScalarProperty Name="MetodoPago" ColumnName="MetodoPago" />
+                <ScalarProperty Name="NumAtCard" ColumnName="NumAtCard" />
+                <ScalarProperty Name="ControlAccount" ColumnName="ControlAccount" />
+                <ScalarProperty Name="DocEntry" ColumnName="DocEntry" />
+                <ScalarProperty Name="INT_Estado" ColumnName="INT_Estado" />
+                <ScalarProperty Name="INT_Error" ColumnName="INT_Error" />
+                <ScalarProperty Name="Refacturable" ColumnName="Refacturable" />
+                <ScalarProperty Name="FolioPref" ColumnName="FolioPref" />
+                <ScalarProperty Name="FolioNum" ColumnName="FolioNum" />
+                <ScalarProperty Name="TipoDocumento" ColumnName="TipoDocumento" />
+                <ScalarProperty Name="Asunto" ColumnName="Asunto" />
+                <ScalarProperty Name="Etapa" ColumnName="Etapa" />
+                <ScalarProperty Name="INT_Ref1" ColumnName="INT_Ref1" />
+                <ScalarProperty Name="DocRate" ColumnName="DocRate" />
+                <ScalarProperty Name="RendicionesTotales" ColumnName="RendicionesTotales" />
+                <ScalarProperty Name="DocSubType" ColumnName="DocSubType" />
+                <ScalarProperty Name="U_BPP_MDTD" ColumnName="U_BPP_MDTD" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+          <FunctionImportMapping FunctionImportName="MSS_SP_SICER_FACTURACIONWEBDETALLE" FunctionName="SICER_INT_SBOModel.Store.MSS_SP_SICER_FACTURACIONWEBDETALLE">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="SICER_INT_SBOModel.MSS_SP_SICER_FACTURACIONWEBDETALLE_Result">
+                <ScalarProperty Name="IdFactura" ColumnName="IdFactura" />
+                <ScalarProperty Name="AccountCode" ColumnName="AccountCode" />
+                <ScalarProperty Name="TaxCode" ColumnName="TaxCode" />
+                <ScalarProperty Name="LineTotal" ColumnName="LineTotal" />
+                <ScalarProperty Name="CostingCode" ColumnName="CostingCode" />
+                <ScalarProperty Name="CostingCode2" ColumnName="CostingCode2" />
+                <ScalarProperty Name="CostingCode3" ColumnName="CostingCode3" />
+                <ScalarProperty Name="CostingCode4" ColumnName="CostingCode4" />
+                <ScalarProperty Name="CostingCode5" ColumnName="CostingCode5" />
+                <ScalarProperty Name="Description" ColumnName="Description" />
+                <ScalarProperty Name="Etapa" ColumnName="Etapa" />
+                <ScalarProperty Name="TipoDocumento" ColumnName="TipoDocumento" />
+                <ScalarProperty Name="ExCode" ColumnName="ExCode" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+          <FunctionImportMapping FunctionImportName="MSS_SP_SICER_FACTURASRENDIDASER" FunctionName="SICER_INT_SBOModel.Store.MSS_SP_SICER_FACTURASRENDIDASER">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="SICER_INT_SBOModel.MSS_SP_SICER_FACTURASRENDIDASER_Result">
+                <ScalarProperty Name="DocTotal" ColumnName="DocTotal" />
+                <ScalarProperty Name="Count" ColumnName="Count" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+          <FunctionImportMapping FunctionImportName="MSS_SP_SICER_GRUPOSFACTURACION" FunctionName="SICER_INT_SBOModel.Store.MSS_SP_SICER_GRUPOSFACTURACION" />
+          <FunctionImportMapping FunctionImportName="MSS_SP_SICER_JOURNALENTRIESHEADER" FunctionName="SICER_INT_SBOModel.Store.MSS_SP_SICER_JOURNALENTRIESHEADER">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="SICER_INT_SBOModel.MSS_SP_SICER_JOURNALENTRIESHEADER_Result">
+                <ScalarProperty Name="Code" ColumnName="Code" />
+                <ScalarProperty Name="IdAsiento" ColumnName="IdAsiento" />
+                <ScalarProperty Name="IdEmpresa" ColumnName="IdEmpresa" />
+                <ScalarProperty Name="TaxDate" ColumnName="TaxDate" />
+                <ScalarProperty Name="ReferenceDate" ColumnName="ReferenceDate" />
+                <ScalarProperty Name="DueDate" ColumnName="DueDate" />
+                <ScalarProperty Name="Ref1" ColumnName="Ref1" />
+                <ScalarProperty Name="Ref2" ColumnName="Ref2" />
+                <ScalarProperty Name="Ref3" ColumnName="Ref3" />
+                <ScalarProperty Name="Memo" ColumnName="Memo" />
+                <ScalarProperty Name="TransCode" ColumnName="TransCode" />
+                <ScalarProperty Name="TransId" ColumnName="TransId" />
+                <ScalarProperty Name="INT_Estado" ColumnName="INT_Estado" />
+                <ScalarProperty Name="INT_Error" ColumnName="INT_Error" />
+                <ScalarProperty Name="CardCode" ColumnName="CardCode" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+          <FunctionImportMapping FunctionImportName="MSS_SP_SICER_JOURNALENTRIESLINES" FunctionName="SICER_INT_SBOModel.Store.MSS_SP_SICER_JOURNALENTRIESLINES">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="SICER_INT_SBOModel.MSS_SP_SICER_JOURNALENTRIESLINES_Result">
+                <ScalarProperty Name="IdAsiento" ColumnName="IdAsiento" />
+                <ScalarProperty Name="AccountCode" ColumnName="AccountCode" />
+                <ScalarProperty Name="FCCurrency" ColumnName="FCCurrency" />
+                <ScalarProperty Name="Debit" ColumnName="Debit" />
+                <ScalarProperty Name="Credit" ColumnName="Credit" />
+                <ScalarProperty Name="FCDebit" ColumnName="FCDebit" />
+                <ScalarProperty Name="FCCredit" ColumnName="FCCredit" />
+                <ScalarProperty Name="Reference1" ColumnName="Reference1" />
+                <ScalarProperty Name="Reference2" ColumnName="Reference2" />
+                <ScalarProperty Name="Reference3" ColumnName="Reference3" />
+                <ScalarProperty Name="LineMemo" ColumnName="LineMemo" />
+                <ScalarProperty Name="CostingCode" ColumnName="CostingCode" />
+                <ScalarProperty Name="CostingCode2" ColumnName="CostingCode2" />
+                <ScalarProperty Name="CostingCode3" ColumnName="CostingCode3" />
+                <ScalarProperty Name="CostingCode4" ColumnName="CostingCode4" />
+                <ScalarProperty Name="CostingCode5" ColumnName="CostingCode5" />
+                <ScalarProperty Name="CardCode" ColumnName="CardCode" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+          <FunctionImportMapping FunctionImportName="MSS_SP_SICER_PAYROLLINVOICES" FunctionName="SICER_INT_SBOModel.Store.MSS_SP_SICER_PAYROLLINVOICES">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="SICER_INT_SBOModel.MSS_SP_SICER_PAYROLLINVOICES_Result">
+                <ScalarProperty Name="IdFactura" ColumnName="IdFactura" />
+                <ScalarProperty Name="CardCode" ColumnName="CardCode" />
+                <ScalarProperty Name="DocCurrency" ColumnName="DocCurrency" />
+                <ScalarProperty Name="CostingCode" ColumnName="CostingCode" />
+                <ScalarProperty Name="CostingCode2" ColumnName="CostingCode2" />
+                <ScalarProperty Name="CostingCode3" ColumnName="CostingCode3" />
+                <ScalarProperty Name="CostingCode4" ColumnName="CostingCode4" />
+                <ScalarProperty Name="CostingCode5" ColumnName="CostingCode5" />
+                <ScalarProperty Name="Año" ColumnName="Año" />
+                <ScalarProperty Name="Mes" ColumnName="Mes" />
+                <ScalarProperty Name="TipoCambio" ColumnName="TipoCambio" />
+                <ScalarProperty Name="Aprobador" ColumnName="Aprobador" />
+                <ScalarProperty Name="IM_REMU_AFEC" ColumnName="IM_REMU_AFEC" />
+                <ScalarProperty Name="IM_REMU_INAF" ColumnName="IM_REMU_INAF" />
+                <ScalarProperty Name="IM_BRUT_FACT" ColumnName="IM_BRUT_FACT" />
+                <ScalarProperty Name="IM_NETO_FACT" ColumnName="IM_NETO_FACT" />
+                <ScalarProperty Name="IM_BRUT_ANTI" ColumnName="IM_BRUT_ANTI" />
+                <ScalarProperty Name="IM_BRUT_IGV" ColumnName="IM_BRUT_IGV" />
+                <ScalarProperty Name="SAP_IMPREFAC" ColumnName="SAP_IMPREFAC" />
+                <ScalarProperty Name="TI_SITU" ColumnName="TI_SITU" />
+                <ScalarProperty Name="FE_APRO" ColumnName="FE_APRO" />
+                <ScalarProperty Name="TipoFacturacion" ColumnName="TipoFacturacion" />
+                <ScalarProperty Name="INT_Estado" ColumnName="INT_Estado" />
+                <ScalarProperty Name="INT_Fecha" ColumnName="INT_Fecha" />
+                <ScalarProperty Name="AccountCode" ColumnName="AccountCode" />
+                <ScalarProperty Name="DocDate" ColumnName="DocDate" />
+                <ScalarProperty Name="DocType" ColumnName="DocType" />
+                <ScalarProperty Name="Code" ColumnName="Code" />
+                <ScalarProperty Name="INT_Error" ColumnName="INT_Error" />
+                <ScalarProperty Name="AccountCodeDet" ColumnName="AccountCodeDet" />
+                <ScalarProperty Name="Serie" ColumnName="Serie" />
+                <ScalarProperty Name="FactorRefacturacion" ColumnName="FactorRefacturacion" />
+                <ScalarProperty Name="Concepto" ColumnName="Concepto" />
+                <ScalarProperty Name="ST_PLAN_OTRO" ColumnName="ST_PLAN_OTRO" />
+                <ScalarProperty Name="CO_PLAN_OTRO" ColumnName="CO_PLAN_OTRO" />
+                <ScalarProperty Name="FA_OTRO_AFEC" ColumnName="FA_OTRO_AFEC" />
+                <ScalarProperty Name="FA_OTRO_INAF" ColumnName="FA_OTRO_INAF" />
+                <ScalarProperty Name="FA_OTRO_VACA" ColumnName="FA_OTRO_VACA" />
+                <ScalarProperty Name="NO_GLOS_SAP1" ColumnName="NO_GLOS_SAP1" />
+                <ScalarProperty Name="CO_GRUP_FACT" ColumnName="CO_GRUP_FACT" />
+                <ScalarProperty Name="Description" ColumnName="Description" />
+                <ScalarProperty Name="IM_OTRO_AFEC" ColumnName="IM_OTRO_AFEC" />
+                <ScalarProperty Name="IM_OTRO_INAF" ColumnName="IM_OTRO_INAF" />
+                <ScalarProperty Name="IM_OTRO_VACA" ColumnName="IM_OTRO_VACA" />
+                <ScalarProperty Name="DocEntry" ColumnName="DocEntry" />
+                <ScalarProperty Name="CondicionPago" ColumnName="CondicionPago" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+          <FunctionImportMapping FunctionImportName="MSS_SP_SICER_PENDINGINVOICES" FunctionName="SICER_INT_SBOModel.Store.MSS_SP_SICER_PENDINGINVOICES">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="SICER_INT_SBOModel.MSS_SP_SICER_PENDINGINVOICES_Result">
+                <ScalarProperty Name="IdFactura" ColumnName="IdFactura" />
+                <ScalarProperty Name="CardCode" ColumnName="CardCode" />
+                <ScalarProperty Name="DocCurrency" ColumnName="DocCurrency" />
+                <ScalarProperty Name="CostingCode" ColumnName="CostingCode" />
+                <ScalarProperty Name="CostingCode2" ColumnName="CostingCode2" />
+                <ScalarProperty Name="CostingCode3" ColumnName="CostingCode3" />
+                <ScalarProperty Name="CostingCode4" ColumnName="CostingCode4" />
+                <ScalarProperty Name="CostingCode5" ColumnName="CostingCode5" />
+                <ScalarProperty Name="Año" ColumnName="Año" />
+                <ScalarProperty Name="Mes" ColumnName="Mes" />
+                <ScalarProperty Name="TipoCambio" ColumnName="TipoCambio" />
+                <ScalarProperty Name="Aprobador" ColumnName="Aprobador" />
+                <ScalarProperty Name="IM_REMU_AFEC" ColumnName="IM_REMU_AFEC" />
+                <ScalarProperty Name="IM_REMU_INAF" ColumnName="IM_REMU_INAF" />
+                <ScalarProperty Name="IM_BRUT_FACT" ColumnName="IM_BRUT_FACT" />
+                <ScalarProperty Name="IM_NETO_FACT" ColumnName="IM_NETO_FACT" />
+                <ScalarProperty Name="IM_BRUT_ANTI" ColumnName="IM_BRUT_ANTI" />
+                <ScalarProperty Name="IM_BRUT_IGV" ColumnName="IM_BRUT_IGV" />
+                <ScalarProperty Name="SAP_IMPREFAC" ColumnName="SAP_IMPREFAC" />
+                <ScalarProperty Name="TI_SITU" ColumnName="TI_SITU" />
+                <ScalarProperty Name="FE_APRO" ColumnName="FE_APRO" />
+                <ScalarProperty Name="TipoFacturacion" ColumnName="TipoFacturacion" />
+                <ScalarProperty Name="INT_Estado" ColumnName="INT_Estado" />
+                <ScalarProperty Name="INT_Fecha" ColumnName="INT_Fecha" />
+                <ScalarProperty Name="AccountCode" ColumnName="AccountCode" />
+                <ScalarProperty Name="DocDate" ColumnName="DocDate" />
+                <ScalarProperty Name="DocType" ColumnName="DocType" />
+                <ScalarProperty Name="Code" ColumnName="Code" />
+                <ScalarProperty Name="INT_Error" ColumnName="INT_Error" />
+                <ScalarProperty Name="AccountCodeDet" ColumnName="AccountCodeDet" />
+                <ScalarProperty Name="Serie" ColumnName="Serie" />
+                <ScalarProperty Name="FactorRefacturacion" ColumnName="FactorRefacturacion" />
+                <ScalarProperty Name="Concepto" ColumnName="Concepto" />
+                <ScalarProperty Name="ST_PLAN_OTRO" ColumnName="ST_PLAN_OTRO" />
+                <ScalarProperty Name="CO_PLAN_OTRO" ColumnName="CO_PLAN_OTRO" />
+                <ScalarProperty Name="FA_OTRO_AFEC" ColumnName="FA_OTRO_AFEC" />
+                <ScalarProperty Name="FA_OTRO_INAF" ColumnName="FA_OTRO_INAF" />
+                <ScalarProperty Name="FA_OTRO_VACA" ColumnName="FA_OTRO_VACA" />
+                <ScalarProperty Name="NO_GLOS_SAP1" ColumnName="NO_GLOS_SAP1" />
+                <ScalarProperty Name="CO_GRUP_FACT" ColumnName="CO_GRUP_FACT" />
+                <ScalarProperty Name="Description" ColumnName="Description" />
+                <ScalarProperty Name="DocEntry" ColumnName="DocEntry" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+          <FunctionImportMapping FunctionImportName="MSS_SP_SICER_PRIMERAETAPA" FunctionName="SICER_INT_SBOModel.Store.MSS_SP_SICER_PRIMERAETAPA" />
+          <FunctionImportMapping FunctionImportName="MSS_SP_SICER_PURCHASEINVOICES" FunctionName="SICER_INT_SBOModel.Store.MSS_SP_SICER_PURCHASEINVOICES">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="SICER_INT_SBOModel.MSS_SP_SICER_PURCHASEINVOICES_Result">
+                <ScalarProperty Name="Code" ColumnName="Code" />
+                <ScalarProperty Name="IdFactura" ColumnName="IdFactura" />
+                <ScalarProperty Name="CardCode" ColumnName="CardCode" />
+                <ScalarProperty Name="CardName" ColumnName="CardName" />
+                <ScalarProperty Name="Series" ColumnName="Series" />
+                <ScalarProperty Name="CntPerson" ColumnName="CntPerson" />
+                <ScalarProperty Name="DocCurrency" ColumnName="DocCurrency" />
+                <ScalarProperty Name="DocDate" ColumnName="DocDate" />
+                <ScalarProperty Name="DocDueDate" ColumnName="DocDueDate" />
+                <ScalarProperty Name="TaxDate" ColumnName="TaxDate" />
+                <ScalarProperty Name="JournalMemo" ColumnName="JournalMemo" />
+                <ScalarProperty Name="MetodoPago" ColumnName="MetodoPago" />
+                <ScalarProperty Name="NumAtCard" ColumnName="NumAtCard" />
+                <ScalarProperty Name="ControlAccount" ColumnName="ControlAccount" />
+                <ScalarProperty Name="DocEntry" ColumnName="DocEntry" />
+                <ScalarProperty Name="INT_Estado" ColumnName="INT_Estado" />
+                <ScalarProperty Name="INT_Error" ColumnName="INT_Error" />
+                <ScalarProperty Name="Refacturable" ColumnName="Refacturable" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+          <FunctionImportMapping FunctionImportName="MSS_SP_SICER_PURCHASEINVOICESLINES" FunctionName="SICER_INT_SBOModel.Store.MSS_SP_SICER_PURCHASEINVOICESLINES">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="SICER_INT_SBOModel.MSS_SP_SICER_PURCHASEINVOICESLINES_Result">
+                <ScalarProperty Name="IdFactura" ColumnName="IdFactura" />
+                <ScalarProperty Name="AccountCode" ColumnName="AccountCode" />
+                <ScalarProperty Name="TaxCode" ColumnName="TaxCode" />
+                <ScalarProperty Name="LineTotal" ColumnName="LineTotal" />
+                <ScalarProperty Name="CostingCode" ColumnName="CostingCode" />
+                <ScalarProperty Name="CostingCode2" ColumnName="CostingCode2" />
+                <ScalarProperty Name="CostingCode3" ColumnName="CostingCode3" />
+                <ScalarProperty Name="CostingCode4" ColumnName="CostingCode4" />
+                <ScalarProperty Name="CostingCode5" ColumnName="CostingCode5" />
+                <ScalarProperty Name="Description" ColumnName="Description" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+          <FunctionImportMapping FunctionImportName="MSS_SP_SICER_REFACTURABLES" FunctionName="SICER_INT_SBOModel.Store.MSS_SP_SICER_REFACTURABLES">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="SICER_INT_SBOModel.MSS_SP_SICER_REFACTURABLES_Result">
+                <ScalarProperty Name="DocEntry" ColumnName="DocEntry" />
+                <ScalarProperty Name="Multiplier" ColumnName="Multiplier" />
+                <ScalarProperty Name="ObjType" ColumnName="ObjType" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+          <FunctionImportMapping FunctionImportName="MSS_SP_SICER_RENDICIONESSEGUNDAETAPA" FunctionName="SICER_INT_SBOModel.Store.MSS_SP_SICER_RENDICIONESSEGUNDAETAPA">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="SICER_INT_SBOModel.MSS_SP_SICER_RENDICIONESSEGUNDAETAPA_Result">
+                <ScalarProperty Name="DocTotal" ColumnName="DocTotal" />
+                <ScalarProperty Name="Rate" ColumnName="Rate" />
+                <ScalarProperty Name="Series" ColumnName="Series" />
+                <ScalarProperty Name="Folio" ColumnName="Folio" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+          <FunctionImportMapping FunctionImportName="MSS_SP_SICER_TRASLADOFACTURAS" FunctionName="SICER_INT_SBOModel.Store.MSS_SP_SICER_TRASLADOFACTURAS" />
+          <FunctionImportMapping FunctionImportName="MSS_SP_SICER_WEBUDOINVOICES" FunctionName="SICER_INT_SBOModel.Store.MSS_SP_SICER_WEBUDOINVOICES">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="SICER_INT_SBOModel.MSS_SP_SICER_WEBUDOINVOICES_Result">
+                <ScalarProperty Name="DocEntry" ColumnName="DocEntry" />
+                <ScalarProperty Name="CardCode" ColumnName="CardCode" />
+                <ScalarProperty Name="DocDate" ColumnName="DocDate" />
+                <ScalarProperty Name="DocRate" ColumnName="DocRate" />
+                <ScalarProperty Name="TipoDocumento" ColumnName="TipoDocumento" />
+                <ScalarProperty Name="ExCode" ColumnName="ExCode" />
+                <ScalarProperty Name="DocCurrency" ColumnName="DocCurrency" />
+                <ScalarProperty Name="Etapa" ColumnName="Etapa" />
+                <ScalarProperty Name="Asunto" ColumnName="Asunto" />
+                <ScalarProperty Name="Description" ColumnName="Description" />
+                <ScalarProperty Name="MonBruto" ColumnName="MonBruto" />
+                <ScalarProperty Name="CostingCode" ColumnName="CostingCode" />
+                <ScalarProperty Name="CostingCode2" ColumnName="CostingCode2" />
+                <ScalarProperty Name="CostingCode3" ColumnName="CostingCode3" />
+                <ScalarProperty Name="CostingCode4" ColumnName="CostingCode4" />
+                <ScalarProperty Name="CostingCode5" ColumnName="CostingCode5" />
+                <ScalarProperty Name="JournalMemo" ColumnName="JournalMemo" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="false" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
+        <DesignerProperty Name="UseLegacyProvider" Value="false" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="None" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>
