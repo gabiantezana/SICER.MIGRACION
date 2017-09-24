@@ -31,6 +31,10 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="Interop.SAPbobsCOM">
+      <HintPath>packages\Interop.SAPbobsCOM.DLL</HintPath>
+      <EmbedInteropTypes>True</EmbedInteropTypes>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Xml.Linq" />
@@ -40,6 +44,19 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Connection\Connection.cs" />
+    <Compile Include="Documents\BusinessPartners.cs" />
+    <Compile Include="Documents\CorreoLideres.cs" />
+    <Compile Include="Documents\Invoices.cs" />
+    <Compile Include="Documents\JournalEntries.cs" />
+    <Compile Include="Documents\MDocument.cs" />
+    <Compile Include="Documents\Payments.cs" />
+    <Compile Include="Documents\Structs\ConceptBody.cs" />
+    <Compile Include="Documents\Structs\ConceptKey.cs" />
+    <Compile Include="Documents\Structs\SalesInvoices.cs" />
+    <Compile Include="Documents\WebInvoices.cs" />
+    <Compile Include="Helper\ConstantHelper.cs" />
+    <Compile Include="Helper\FunctionsHelper.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
