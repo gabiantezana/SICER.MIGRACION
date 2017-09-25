@@ -10,7 +10,7 @@ namespace SICER.MIGRACION.Documents
 {
     class BusinessPartners : MDocument
     {
-        private const string BUSINESS_PARTNER_SP_SUFFIX = nameof(SICER_INT_SBOEntities.MSS_SP_SICER_BUSINESSPARTNERS); //"SEI_STW_BusinessPartners";
+        private const string BUSINESS_PARTNER_SP_SUFFIX = "EXEC " + nameof(SICER_INT_SBOEntities.MSS_SP_SICER_BUSINESSPARTNERS); //"SEI_STW_BusinessPartners";
         private const string BUSINESS_PARTNER_TABLE = "SICER_INT_SBO.dbo.MaestroTrabajadores";
         private const string BP_KEY = "CardCode";
 

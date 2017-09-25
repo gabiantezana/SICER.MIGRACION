@@ -12,8 +12,8 @@ namespace SICER.MIGRACION.Documents
     class JournalEntries : MDocument
     {
 
-        private const string JOURNAL_ENTRY_HEADER_SP = nameof(SICER_INT_SBOEntities.MSS_SP_SICER_JOURNALENTRIESHEADER); //"SEI_STW_JournalEntriesHeader";
-        private const string JOURNAL_ENTRY_LINES_SP = nameof(SICER_INT_SBOEntities.MSS_SP_SICER_JOURNALENTRIESLINES); //"SEI_STW_JournalEntriesLines";
+        private const string JOURNAL_ENTRY_HEADER_SP = "EXEC  " + nameof(SICER_INT_SBOEntities.MSS_SP_SICER_JOURNALENTRIESHEADER); //"SEI_STW_JournalEntriesHeader";
+        private const string JOURNAL_ENTRY_LINES_SP = "EXEC  " + nameof(SICER_INT_SBOEntities.MSS_SP_SICER_JOURNALENTRIESLINES); //"SEI_STW_JournalEntriesLines";
         private const string JOURNAL_ENTRY_TABLE = "CabeceraAsientos";
         private const string JOURNAL_KEY_FIELD = "IdAsiento";
 

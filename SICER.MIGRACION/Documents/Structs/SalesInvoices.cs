@@ -11,7 +11,7 @@ namespace SICER.MIGRACION.Documents.Structs
     class SalesInvoices : MDocument
     {
 
-        private const string INVOICES_HEADER_SP = nameof(SICER_INT_SBOEntities.MSS_SP_SICER_PAYROLLINVOICES); //"SEI_STW_PayrollInvoices";
+        private const string INVOICES_HEADER_SP = "EXEC " + nameof(SICER_INT_SBOEntities.MSS_SP_SICER_PAYROLLINVOICES); //"SEI_STW_PayrollInvoices";
         private const string INVOICES_TABLE = "FacturasPayroll";
         private const string INVOICES_KEY = "IdFactura";
 

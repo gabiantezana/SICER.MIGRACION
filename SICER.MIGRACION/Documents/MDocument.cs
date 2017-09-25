@@ -21,7 +21,11 @@ namespace SICER.MIGRACION.Documents
 
         public void migrateBP(SAPbobsCOM.Company Company)
         {
+            /*Object asdfd = new object();
+            ADODB.Recordset migrationRS = SQLConnection.GetConnection().Execute("SET NOCOUNT ON; exec " + migrationSP, out asdfd);*/
+
             ADODB.Recordset migrationRS = new SQLConnection().DoQuery(migrationSP);
+
             while (!migrationRS.EOF)
             {
                 Company.StartTransaction();
@@ -49,7 +53,10 @@ namespace SICER.MIGRACION.Documents
                 }
                 migrationRS.MoveNext();
             }
-            if (Company.InTransaction) { Company.EndTransaction(SAPbobsCOM.BoWfTransOpt.wf_RollBack); }
+            if (Company.InTransaction)
+            {
+                Company.EndTransaction(SAPbobsCOM.BoWfTransOpt.wf_RollBack);
+            }
             System.Runtime.InteropServices.Marshal.ReleaseComObject(migrationRS);
             migrationRS = null;
         }
@@ -85,7 +92,10 @@ namespace SICER.MIGRACION.Documents
                 }
                 migrationRS.MoveNext();
             }
-            if (Company.InTransaction) { Company.EndTransaction(SAPbobsCOM.BoWfTransOpt.wf_RollBack); }
+            if (Company.InTransaction)
+            {
+                Company.EndTransaction(SAPbobsCOM.BoWfTransOpt.wf_RollBack);
+            }
             System.Runtime.InteropServices.Marshal.ReleaseComObject(migrationRS);
             migrationRS = null;
         }

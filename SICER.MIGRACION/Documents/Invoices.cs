@@ -11,8 +11,8 @@ namespace SICER.MIGRACION.Documents
     class Invoices : MDocument
     {
 
-        private const string INVOICES_SP_HEADER = nameof(SICER_INT_SBOEntities.MSS_SP_SICER_PURCHASEINVOICES); //"SEI_STW_PurchInvoices";
-        private const string INVOICES_SP_LINES = nameof(SICER_INT_SBOEntities.MSS_SP_SICER_PURCHASEINVOICESLINES); //"SEI_STW_PurchInvoicesLines ";
+        private const string INVOICES_SP_HEADER = "EXEC  " + nameof(SICER_INT_SBOEntities.MSS_SP_SICER_PURCHASEINVOICES); //"SEI_STW_PurchInvoices";
+        private const string INVOICES_SP_LINES = "EXEC  " + nameof(SICER_INT_SBOEntities.MSS_SP_SICER_PURCHASEINVOICESLINES); //"SEI_STW_PurchInvoicesLines ";
         private const string INVOICES_TABLE = "FacturasCabecera";
         private const string INVOICES_KEY = "IdFactura";
 

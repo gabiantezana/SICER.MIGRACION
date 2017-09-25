@@ -10,8 +10,8 @@ namespace SICER.MIGRACION.Documents
 {
     class WebInvoices
     {
-        private const string INVOICES_SP_HEADER = "EXEC [" + nameof(SICER_INT_SBOEntities.MSS_SP_SICER_FACTURACIONWEB) + "]"; //"EXEC [SEI_STW_FacturacionWeb]";
-        private const string INVOICES_SP_LINES = "EXEC [" + nameof(SICER_INT_SBOEntities.MSS_SP_SICER_FACTURACIONWEBDETALLE) + "]";  //"EXEC [SEI_STW_FacturacionWebDetalle] ";
+        private const string INVOICES_SP_HEADER = "EXEC " + nameof(SICER_INT_SBOEntities.MSS_SP_SICER_FACTURACIONWEB); //"EXEC [SEI_STW_FacturacionWeb]";
+        private const string INVOICES_SP_LINES = "EXEC " + nameof(SICER_INT_SBOEntities.MSS_SP_SICER_FACTURACIONWEBDETALLE);  //"EXEC [SEI_STW_FacturacionWebDetalle] ";
         private const string INVOICES_TABLE = "FacturasWeb";
 
         public void migrate(SAPbobsCOM.Company Company)
