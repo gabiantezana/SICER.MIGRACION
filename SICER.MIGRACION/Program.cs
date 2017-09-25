@@ -19,8 +19,8 @@ namespace SICER.MIGRACION
             {
                 SAPbobsCOM.Company Company = null;
 
-                //BusinessPartners bp = new BusinessPartners(Company);
-                //bp.migrateBP(Company);
+                BusinessPartners bp = new BusinessPartners(Company);
+                bp.migrateBP(Company);
 
                 JournalEntries je = new JournalEntries(Company);
                 je.migrate(Company);
