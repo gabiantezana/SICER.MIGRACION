@@ -29,8 +29,8 @@ namespace SICER.MIGRACION.Documents
             while (!migrationRS.EOF)
             {
                 Company.StartTransaction();
-                string currentDocEntry = migrationRS.Fields.Item(keyField).Value;
-                string code = migrationRS.Fields.Item("Code").Value;
+                string currentDocEntry = migrationRS.Fields.Item(keyField).Value.ToSafeString();
+                string code = migrationRS.Fields.Item("Code").Value.ToSafeString(); ;
                 try
                 {
                     if (migrateDocuments(Company, migrationRS))
@@ -68,8 +68,8 @@ namespace SICER.MIGRACION.Documents
             while (!migrationRS.EOF)
             {
                 Company.StartTransaction();
-                int currentDocEntry = migrationRS.Fields.Item(keyField).Value;
-                string Code = migrationRS.Fields.Item("Code").Value;
+                int currentDocEntry = migrationRS.Fields.Item(keyField).Value.ToInt32();
+                string Code = migrationRS.Fields.Item("Code").Value.ToSafeString();
                 try
                 {
                     if (migrateDocuments(Company, migrationRS))

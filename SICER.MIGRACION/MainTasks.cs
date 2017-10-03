@@ -1,6 +1,7 @@
 ﻿using SICER.MIGRACION.Connections;
 using SICER.MIGRACION.Documents;
 using SICER.MIGRACION.Documents.Structs;
+using SICER.MIGRACION.Helper;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -52,17 +53,17 @@ namespace SICER.MIGRACION
                     BusinessPartners bp = new BusinessPartners(Company);
                     bp.migrateBP(Company);
 
-                    JournalEntries je = new JournalEntries(Company);
-                    je.migrate(Company);
+                    //JournalEntries je = new JournalEntries(Company);
+                    //je.migrate(Company);
 
-                    Invoices rInv = new Invoices(Company);
-                    rInv.migrate(Company);
+                    //Invoices rInv = new Invoices(Company);
+                    //rInv.migrate(Company);
 
                     WebInvoices webInv = new WebInvoices();
                     webInv.migrate(Company);
 
-                    SalesInvoices salesInv = new SalesInvoices(Company);
-                    salesInv.migrate(Company);
+                    //SalesInvoices salesInv = new SalesInvoices(Company);
+                    //salesInv.migrate(Company);
 
                 }
                 con.Dispose();
@@ -70,6 +71,8 @@ namespace SICER.MIGRACION
             catch (Exception ex)
             {
                 con.Dispose();
+                ExceptionHelper.LogException(ex);
+
             }
             finally
             {

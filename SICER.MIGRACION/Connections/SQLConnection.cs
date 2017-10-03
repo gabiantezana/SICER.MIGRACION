@@ -1,5 +1,4 @@
-﻿using SICER.MIGRACION.Model;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -17,8 +16,6 @@ namespace SICER.MIGRACION.Connections
             {
                 String _connectionStringFromEF = System.Configuration.ConfigurationManager.ConnectionStrings["SQLRECORDSETS"].ConnectionString;
                 String _connectionString = "Provider = SQLOLEDB; " + _connectionStringFromEF; // Data Source = LAPTOP-GAP\\SQL2012; Initial Catalog = SICER_INT_SBO;User ID = sa; Password = root";
-
-                String ASFD = new SICER_INT_SBOEntities().Database.Connection.ConnectionString;
 
                 _Connection = new ADODB.Connection();
                 _Recordset = new ADODB.Recordset();
