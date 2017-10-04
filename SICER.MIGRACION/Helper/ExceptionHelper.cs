@@ -13,7 +13,8 @@ namespace SICER.MIGRACION.Helper
         {
 
             String fileName = DateTime.Now.ToString("yyyy-MM-dd") + ".txt";
-            String logFile = @"D:\" + fileName;
+            //String logFile = @"D:\" + fileName;
+            String logFile = @"C:\LOG\LAST" + fileName;
 
             if (!System.IO.File.Exists(logFile))
                 System.IO.File.Create(logFile).Close();

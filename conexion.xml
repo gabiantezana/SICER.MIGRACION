@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<SBO>
+  <Company>
+    <Server>192.168.1.52:30015</Server>
+    <DBCompany>SBO_IIMP_PRUEBAS</DBCompany>
+    <DBUser>SYSTEM</DBUser>
+    <DBPassword>S31d0r2017</DBPassword>
+    <SBOUser>manager</SBOUser>
+    <SBOPassword>IIMP2017</SBOPassword>
+  </Company>
+</SBO>

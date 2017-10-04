@@ -177,6 +177,8 @@ namespace SICER.MIGRACION.Documents
 
             payment.Invoices.InvoiceType = isInvoice ? SAPbobsCOM.BoRcptInvTypes.it_PurchaseInvoice : SAPbobsCOM.BoRcptInvTypes.it_PurchaseCreditNote;
             payment.Invoices.DocEntry = docEntry;
+
+
             switch (doc.DocCurrency)
             {
                 case "SOL":
