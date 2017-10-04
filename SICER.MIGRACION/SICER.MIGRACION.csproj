@@ -107,6 +107,7 @@
     <Compile Include="Helper\ConstantHelper.cs" />
     <Compile Include="Helper\ConvertHelper.cs" />
     <Compile Include="Helper\FunctionsHelper.cs" />
+    <Compile Include="Helper\QueryHelper.cs" />
     <Compile Include="MainTasks.cs">
       <SubType>Component</SubType>
     </Compile>

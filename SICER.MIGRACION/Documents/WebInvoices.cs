@@ -81,6 +81,47 @@ namespace SICER.MIGRACION.Documents
                 invoice.UserFields.Fields.Item("U_Etapa").Value = etapa.ToString();
                 invoice.UserFields.Fields.Item("U_WebType").Value = tipoDoc.ToString();
 
+                /*--------------------------------------GET CONTROL ACCOUNT/*--------------------------------------*/
+
+                String folioPref = migrationRS.Fields.Item("FolioPref").Value.ToSafeString();
+                String U_codigo = String.Empty;
+
+                switch (invoice.DocCurrency)
+                {
+                    case "SOL":
+                    case "S/":
+                    case "SOLES":
+                        switch (folioPref)
+                        {
+                            case "CC": U_codigo = "DPRMN"; break;
+                            case "ER": U_codigo = "ERCTAMN"; break;
+                            case "RE": U_codigo = "REDPRMN"; break;
+
+                        }
+                        break;
+                    default:
+                        switch (folioPref)
+                        {
+                            case "CC": U_codigo = "DPRME"; break;
+                            case "ER": U_codigo = "ERCTAME"; break;
+                            case "RE": U_codigo = "REDPRME"; break;
+                        }
+                        break;
+                }
+
+                ADODB.Recordset getAccountRS = new ADODB.Recordset();
+                String queryControlAccount = "EXEC MSS_SP_SICER_GETACCOUNTFROMCONFIG '" + folioPref + "' , '" + U_codigo + "'";
+                getAccountRS = new SQLConnection().DoQuery(queryControlAccount);
+
+                String controlAccount = getAccountRS.Fields.Item("U_CuentaContable").Value.ToSafeString();
+                if (String.IsNullOrEmpty(controlAccount))
+                    throw new Exception("No se encontró ControlAccount para documento en la tabla de configuración. Query: " + queryControlAccount);
+                else
+                    invoice.ControlAccount = controlAccount;
+
+                /*------------------------------------FIN GET CONTROL ACCOUNT/*--------------------------------------*/
+
+
                 String query = INVOICES_SP_LINES + "'" + exCode + "', '" + tipoDoc + "', '" + etapa + "', '" + migrationRS.Fields.Item("IdFactura").Value + "'";
                 ADODB.Recordset lines = new SQLConnection().DoQuery(query);
                 while (!lines.EOF)
@@ -170,7 +211,7 @@ namespace SICER.MIGRACION.Documents
             payment.DueDate = doc.DocDueDate;
             payment.TransferDate = doc.DocDate;
             payment.DocCurrency = doc.DocCurrency;
-           // payment.Series = stageOneAccount.Fields.Item("Series").Value.ToInt32(); ;//34 PERU Y CONSULTING, ROOM 32
+            // payment.Series = stageOneAccount.Fields.Item("Series").Value.ToInt32(); ;//34 PERU Y CONSULTING, ROOM 32
             payment.TransferAccount = stageOneAccount.Fields.Item("AcctCode").Value.ToSafeString();
             payment.Remarks = doc.JournalMemo;
             payment.JournalRemarks = doc.JournalMemo;
@@ -182,6 +223,7 @@ namespace SICER.MIGRACION.Documents
             switch (doc.DocCurrency)
             {
                 case "SOL":
+                case "S/":
                     payment.Invoices.SumApplied = doc.DocTotal;
                     break;
                 default:
