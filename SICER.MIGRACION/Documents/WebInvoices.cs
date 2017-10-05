@@ -61,6 +61,8 @@ namespace SICER.MIGRACION.Documents
                 DateTime docDate = DateTime.ParseExact(sDocDate, "yyyyMMdd", System.Globalization.CultureInfo.InvariantCulture);
                 DateTime dueDate = DateTime.ParseExact(sDueDate, "yyyyMMdd", System.Globalization.CultureInfo.InvariantCulture);
                 DateTime taxDate = DateTime.ParseExact(sTaxDate, "yyyyMMdd", System.Globalization.CultureInfo.InvariantCulture);
+
+
                 //invoice.Series = migrationRS.Fields.Item("Series").Value;
                 invoice.DocType = SAPbobsCOM.BoDocumentTypes.dDocument_Service;
                 invoice.CardCode = migrationRS.Fields.Item("CardCode").Value.ToSafeString();
@@ -81,6 +83,7 @@ namespace SICER.MIGRACION.Documents
                 invoice.UserFields.Fields.Item("U_Etapa").Value = etapa.ToString();
                 invoice.UserFields.Fields.Item("U_WebType").Value = tipoDoc.ToString();
 
+
                 /*--------------------------------------GET CONTROL ACCOUNT/*--------------------------------------*/
 
                 String folioPref = migrationRS.Fields.Item("FolioPref").Value.ToSafeString();
@@ -96,7 +99,6 @@ namespace SICER.MIGRACION.Documents
                             case "CC": U_codigo = "DPRMN"; break;
                             case "ER": U_codigo = "ERCTAMN"; break;
                             case "RE": U_codigo = "REDPRMN"; break;
-
                         }
                         break;
                     default:
@@ -109,11 +111,22 @@ namespace SICER.MIGRACION.Documents
                         break;
                 }
 
-                ADODB.Recordset getAccountRS = new ADODB.Recordset();
-                String queryControlAccount = "EXEC MSS_SP_SICER_GETACCOUNTFROMCONFIG '" + folioPref + "' , '" + U_codigo + "'";
-                getAccountRS = new SQLConnection().DoQuery(queryControlAccount);
 
-                String controlAccount = getAccountRS.Fields.Item("U_CuentaContable").Value.ToSafeString();
+                String queryControlAccount = "EXEC MSS_SP_SICER_GETACCOUNTFROMCONFIG '" + folioPref + "' , '" + U_codigo + "'";
+                ADODB.Recordset getAccountRS = new SQLConnection().DoQuery(queryControlAccount);
+
+                Exception ex = new Exception("query: " + queryControlAccount);
+                ExceptionHelper.LogException(ex);
+
+
+                String controlAccount = String.Empty;
+                if (!getAccountRS.EOF)
+                {
+                    controlAccount = getAccountRS.Fields.Item("U_CuentaContable").Value.ToSafeString();
+                    Exception _ex = new Exception("Cuenta de cabecera: " + controlAccount);
+                    ExceptionHelper.LogException(_ex);
+                }
+
                 if (String.IsNullOrEmpty(controlAccount))
                     throw new Exception("No se encontró ControlAccount para documento en la tabla de configuración. Query: " + queryControlAccount);
                 else
@@ -121,12 +134,19 @@ namespace SICER.MIGRACION.Documents
 
                 /*------------------------------------FIN GET CONTROL ACCOUNT/*--------------------------------------*/
 
+                Exception exception2 = new Exception("222222222222222222222222222222222222222222222");
+                ExceptionHelper.LogException(exception2);
 
                 String query = INVOICES_SP_LINES + "'" + exCode + "', '" + tipoDoc + "', '" + etapa + "', '" + migrationRS.Fields.Item("IdFactura").Value + "'";
                 ADODB.Recordset lines = new SQLConnection().DoQuery(query);
                 while (!lines.EOF)
                 {
+                    Exception _exdETALL = new Exception("Cuenta de detalle: " + invoice.Lines.AccountCode);
+                    ExceptionHelper.LogException(_exdETALL);
+
                     invoice.Lines.AccountCode = lines.Fields.Item("AccountCode").Value.ToSafeString();
+
+
                     invoice.Lines.TaxCode = lines.Fields.Item("TaxCode").Value.ToSafeString();
                     //invoice.Lines.TaxCode = "IGV";
                     invoice.Lines.LineTotal = Convert.ToDouble(lines.Fields.Item("LineTotal").Value);
@@ -142,6 +162,7 @@ namespace SICER.MIGRACION.Documents
                 int totalLines = invoice.Lines.Count;
                 double documentTotal = invoice.DocTotal;
                 Company.StartTransaction();
+
 
                 if (invoice.Add() == 0)
                 {

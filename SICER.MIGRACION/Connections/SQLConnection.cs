@@ -1,4 +1,5 @@
-﻿using System;
+﻿using SICER.MIGRACION.Helper;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -29,6 +30,8 @@ namespace SICER.MIGRACION.Connections
             }
             catch (Exception ex)
             {
+                Exception _ex = new Exception("SET NOCOUNT ON; " + SQLquery);
+                ExceptionHelper.LogException(ex);
                 throw;
             }
             finally
