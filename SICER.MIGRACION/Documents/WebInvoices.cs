@@ -86,7 +86,7 @@ namespace SICER.MIGRACION.Documents
 
                 /*--------------------------------------GET CONTROL ACCOUNT/*--------------------------------------*/
 
-                String folioPref = migrationRS.Fields.Item("FolioPref").Value.ToSafeString();
+                String folioPref = migrationRS.Fields.Item("JournalMemo").Value.ToSafeString().Substring(0,2);
                 String U_codigo = String.Empty;
 
                 switch (invoice.DocCurrency)
