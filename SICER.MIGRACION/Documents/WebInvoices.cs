@@ -27,8 +27,48 @@ namespace SICER.MIGRACION.Documents
             }
         }
 
+        private String GetControlAccount(TipoDocumentoWeb tipoDocumentoWeb, String docCurrency)
+        {
+            /*--------------------------------------GET CONTROL ACCOUNT/* cabecera--------------------------------------*/
+            String U_codigo = String.Empty;
+            switch (docCurrency)
+            {
+                case "SOL":
+                case "S/":
+                case "SOLES":
+                    switch (tipoDocumentoWeb)
+                    {
+                        case TipoDocumentoWeb.CajaChica: U_codigo = "DPRMN"; break;
+                        case TipoDocumentoWeb.EntregaRendir: U_codigo = "ERCTAMN"; break;
+                        case TipoDocumentoWeb.Reembolso: U_codigo = "REDPRMN"; break;
+                    }
+                    break;
+                default:
+                    switch (tipoDocumentoWeb)
+                    {
+                        case TipoDocumentoWeb.CajaChica: U_codigo = "DPRME"; break;
+                        case TipoDocumentoWeb.EntregaRendir: U_codigo = "ERCTAME"; break;
+                        case TipoDocumentoWeb.Reembolso: U_codigo = "REDPRME"; break;
+                    }
+                    break;
+            }
+
+            String queryControlAccount = "EXEC MSS_SP_SICER_GETACCOUNTFROMCONFIG '" + tipoDocumentoWeb.GetPrefix() + "' , '" + U_codigo + "'";
+            ADODB.Recordset getAccountRS = new SQLConnection().DoQuery(queryControlAccount);
+
+            String _controlAccount = String.Empty;
+            if (!getAccountRS.EOF)
+                _controlAccount = getAccountRS.Fields.Item("U_CuentaContable").Value.ToSafeString();
+
+            if (String.IsNullOrEmpty(_controlAccount))
+                throw new Exception("No se encontró ControlAccount para documento en la tabla de configuración. Query: " + queryControlAccount);
+
+            return _controlAccount;
+        }
+
         protected void migrateDocuments(SAPbobsCOM.Company Company, ADODB.Recordset migrationRS)
         {
+            TipoDocumentoWeb tipoDocumentoWeb = (TipoDocumentoWeb)migrationRS.Fields.Item("TipoDocumento").Value.ToInt32();
             int exCode = migrationRS.Fields.Item("ExCode").Value.ToInt32();
             int tipoDoc = migrationRS.Fields.Item("TipoDocumento").Value.ToInt32();
             int etapa = migrationRS.Fields.Item("Etapa").Value.ToInt32();
@@ -54,108 +94,44 @@ namespace SICER.MIGRACION.Documents
                         break;
                 }
 
-                //invoice.UserFields.Fields.Item("U_BPP_MDTD").Value = migrationRS.Fields.Item("U_BPP_MDTD").Value;
-                string sDocDate = migrationRS.Fields.Item("DocDate").Value.ToSafeString();
-                string sDueDate = migrationRS.Fields.Item("DocDueDate").Value.ToSafeString();
-                string sTaxDate = migrationRS.Fields.Item("TaxDate").Value.ToSafeString();
-                DateTime docDate = DateTime.ParseExact(sDocDate, "yyyyMMdd", System.Globalization.CultureInfo.InvariantCulture);
-                DateTime dueDate = DateTime.ParseExact(sDueDate, "yyyyMMdd", System.Globalization.CultureInfo.InvariantCulture);
-                DateTime taxDate = DateTime.ParseExact(sTaxDate, "yyyyMMdd", System.Globalization.CultureInfo.InvariantCulture);
-
-
-                //invoice.Series = migrationRS.Fields.Item("Series").Value;
+                invoice.ControlAccount = GetControlAccount(tipoDocumentoWeb, invoice.DocCurrency);
+                invoice.Series = (Int32)migrationRS.Fields.Item("Series").Value;
                 invoice.DocType = SAPbobsCOM.BoDocumentTypes.dDocument_Service;
                 invoice.CardCode = migrationRS.Fields.Item("CardCode").Value.ToSafeString();
                 invoice.DocCurrency = migrationRS.Fields.Item("DocCurrency").Value.ToSafeString();
                 invoice.JournalMemo = migrationRS.Fields.Item("JournalMemo").Value.ToSafeString();
                 invoice.Comments = migrationRS.Fields.Item("Asunto").Value.ToSafeString();
-                //invoice.PaymentMethod = migrationRS.Fields.Item("MetodoPago").Value.ToSafeString();
+                invoice.PaymentMethod = migrationRS.Fields.Item("MetodoPago").Value.ToSafeString();
                 invoice.NumAtCard = migrationRS.Fields.Item("NumAtCard").Value.ToSafeString();
-                //invoice.ControlAccount = migrationRS.Fields.Item("ControlAccount").Value;
                 invoice.FolioPrefixString = migrationRS.Fields.Item("FolioPref").Value.ToSafeString();
                 invoice.FolioNumber = migrationRS.Fields.Item("FolioNum").Value.ToInt32();
-                //invoice.UserFields.Fields.Item("U_MSS_REFACT_COT").Value = migrationRS.Fields.Item("Refacturable").Value;
-                //invoice.UserFields.Fields.Item("U_MSS_Refacturado").Value = "Y";
-                invoice.DocDate = docDate;
-                invoice.TaxDate = taxDate;
-                invoice.DocDueDate = dueDate;
+                invoice.DocDate = DateTime.ParseExact(migrationRS.Fields.Item("DocDate").Value.ToSafeString(), "yyyyMMdd", System.Globalization.CultureInfo.InvariantCulture);
+                invoice.DocDueDate = DateTime.ParseExact(migrationRS.Fields.Item("DocDueDate").Value.ToSafeString(), "yyyyMMdd", System.Globalization.CultureInfo.InvariantCulture);
+                invoice.TaxDate = DateTime.ParseExact(migrationRS.Fields.Item("TaxDate").Value.ToSafeString(), "yyyyMMdd", System.Globalization.CultureInfo.InvariantCulture);
+                invoice.UserFields.Fields.Item("U_BPP_MDTD").Value = migrationRS.Fields.Item("U_BPP_MDTD").Value;
                 invoice.UserFields.Fields.Item("U_ExCode").Value = exCode.ToString();
                 invoice.UserFields.Fields.Item("U_Etapa").Value = etapa.ToString();
                 invoice.UserFields.Fields.Item("U_WebType").Value = tipoDoc.ToString();
 
 
-                /*--------------------------------------GET CONTROL ACCOUNT/*--------------------------------------*/
-
-                String folioPref = migrationRS.Fields.Item("JournalMemo").Value.ToSafeString().Substring(0,2);
-                String U_codigo = String.Empty;
-
-                switch (invoice.DocCurrency)
-                {
-                    case "SOL":
-                    case "S/":
-                    case "SOLES":
-                        switch (folioPref)
-                        {
-                            case "CC": U_codigo = "DPRMN"; break;
-                            case "ER": U_codigo = "ERCTAMN"; break;
-                            case "RE": U_codigo = "REDPRMN"; break;
-                        }
-                        break;
-                    default:
-                        switch (folioPref)
-                        {
-                            case "CC": U_codigo = "DPRME"; break;
-                            case "ER": U_codigo = "ERCTAME"; break;
-                            case "RE": U_codigo = "REDPRME"; break;
-                        }
-                        break;
-                }
-
-
-                String queryControlAccount = "EXEC MSS_SP_SICER_GETACCOUNTFROMCONFIG '" + folioPref + "' , '" + U_codigo + "'";
-                ADODB.Recordset getAccountRS = new SQLConnection().DoQuery(queryControlAccount);
-
-                Exception ex = new Exception("query: " + queryControlAccount);
-                ExceptionHelper.LogException(ex);
-
-
-                String controlAccount = String.Empty;
-                if (!getAccountRS.EOF)
-                {
-                    controlAccount = getAccountRS.Fields.Item("U_CuentaContable").Value.ToSafeString();
-                    Exception _ex = new Exception("Cuenta de cabecera: " + controlAccount);
-                    ExceptionHelper.LogException(_ex);
-                }
-
-                if (String.IsNullOrEmpty(controlAccount))
-                    throw new Exception("No se encontró ControlAccount para documento en la tabla de configuración. Query: " + queryControlAccount);
-                else
-                    invoice.ControlAccount = controlAccount;
-
-                /*------------------------------------FIN GET CONTROL ACCOUNT/*--------------------------------------*/
-
-                Exception exception2 = new Exception("222222222222222222222222222222222222222222222");
-                ExceptionHelper.LogException(exception2);
-
                 String query = INVOICES_SP_LINES + "'" + exCode + "', '" + tipoDoc + "', '" + etapa + "', '" + migrationRS.Fields.Item("IdFactura").Value + "'";
                 ADODB.Recordset lines = new SQLConnection().DoQuery(query);
                 while (!lines.EOF)
                 {
-                    Exception _exdETALL = new Exception("Cuenta de detalle: " + invoice.Lines.AccountCode);
-                    ExceptionHelper.LogException(_exdETALL);
-
                     invoice.Lines.AccountCode = lines.Fields.Item("AccountCode").Value.ToSafeString();
-
-
                     invoice.Lines.TaxCode = lines.Fields.Item("TaxCode").Value.ToSafeString();
-                    //invoice.Lines.TaxCode = "IGV";
                     invoice.Lines.LineTotal = Convert.ToDouble(lines.Fields.Item("LineTotal").Value);
                     invoice.Lines.CostingCode = lines.Fields.Item("CostingCode").Value.ToSafeString();
-                    //invoice.Lines.CostingCode2 = lines.Fields.Item("CostingCode2").Value;
-                    //invoice.Lines.CostingCode3 = lines.Fields.Item("CostingCode3").Value;
-                    //invoice.Lines.CostingCode4 = lines.Fields.Item("CostingCode4").Value;
-                    //invoice.Lines.CostingCode5 = lines.Fields.Item("CostingCode5").Value;
+                    invoice.Lines.CostingCode2 = lines.Fields.Item("CostingCode2").Value.ToSafeString();
+                    invoice.Lines.CostingCode3 = lines.Fields.Item("CostingCode3").Value.ToSafeString();
+                    invoice.Lines.CostingCode4 = lines.Fields.Item("CostingCode4").Value.ToSafeString();
+                    invoice.Lines.CostingCode5 = lines.Fields.Item("CostingCode5").Value.ToSafeString(); ;
                     invoice.Lines.ItemDescription = lines.Fields.Item("Description").Value.ToSafeString();
+                    invoice.Lines.UserFields.Fields.Item("U_MSS_ORD").ValidValue = lines.Fields.Item("PartidaPresupuestal").Value.ToSafeString();  
+
+                    if (migrationRS.Fields.Item("U_BPP_MDTD").Value.ToSafeString() == TipoDocumentoSunat.Devolucion.GetPrefix())
+                        invoice.Lines.AccountCode = lines.Fields.Item("AccountCodeDevolucion").Value.ToSafeString();
+
                     invoice.Lines.Add();
                     lines.MoveNext();
                 }
