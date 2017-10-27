@@ -7,7 +7,7 @@ using System.Text;
 
 namespace SICER.MIGRACION.Documents
 {
-    class BusinessPartners : MDocument
+    public class BusinessPartners : MDocument
     {
         private const string BUSINESS_PARTNER_SP_SUFFIX = "EXEC " + "MSS_SP_SICER_BUSINESSPARTNERS"; //"SEI_STW_BusinessPartners";
         private const string BUSINESS_PARTNER_TABLE = "SICER_INT_SBO.dbo.MaestroTrabajadores";

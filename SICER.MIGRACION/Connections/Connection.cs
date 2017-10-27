@@ -30,6 +30,11 @@ namespace SICER.MIGRACION.Connections
                                SBOUser = header.Element("SBOUser").Value,
                                SBOPassword = header.Element("SBOPassword").Value
                            };
+            if (xmlNodes != null)
+                if (xmlNodes.ToList().Count <= 0)
+                    ExceptionHelper.LogException(new Exception("No se encontró ninguna compañía en el archivo de conexion."));
+
+
             foreach (var xmlNode in xmlNodes)
             {
                 SAPbobsCOM.Company company = new SAPbobsCOM.Company();

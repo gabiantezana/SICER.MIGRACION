@@ -26,6 +26,9 @@ namespace SICER.MIGRACION
         }
         protected override void OnStart(string[] args)
         {
+            Exception ex = new Exception("Service has been started");
+            ExceptionHelper.LogException(ex);
+
             trigger = new Timer(INITIAL_TIME);
             trigger.Interval = CYCLE_INTERVAL;
             trigger.AutoReset = false;
@@ -35,6 +38,8 @@ namespace SICER.MIGRACION
 
         protected override void OnStop()
         {
+            Exception ex = new Exception("Service has been stopped");
+            ExceptionHelper.LogException(ex);
             trigger.Dispose();
         }
 

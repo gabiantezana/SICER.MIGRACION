@@ -7,18 +7,20 @@ using System.Text;
 
 namespace SICER.MIGRACION.Documents
 {
-    class WebInvoices
+    public class WebInvoices
     {
         private const string INVOICES_SP_HEADER = "EXEC " + "MSS_SP_SICER_FACTURACIONWEB"; //"EXEC [SEI_STW_FacturacionWeb]";
         private const string INVOICES_SP_LINES = "EXEC " + "MSS_SP_SICER_FACTURACIONWEBDETALLE"; //"EXEC [SEI_STW_FacturacionWebDetalle] ";
-        private const string INVOICES_TABLE = "FacturasWeb";
+        //private const string INVOICES_TABLE = "FacturasWeb";
+        private const string INVOICES_TABLE = "FACTURASWEBMIGRACION";
+        private const string SP_GETFACTURAS = "EXEC MSS_SP_SICER_GETFACTURASWEBMIGRACION";
 
         public void migrate(SAPbobsCOM.Company Company)
         {
             ADODB.Recordset migrationRS = new ADODB.Recordset();
             ADODB.Recordset updateRS = new ADODB.Recordset();
 
-            migrationRS = new SQLConnection().DoQuery(INVOICES_SP_HEADER);
+            migrationRS = new SQLConnection().DoQuery(SP_GETFACTURAS);
 
             while (!migrationRS.EOF)
             {
@@ -72,7 +74,11 @@ namespace SICER.MIGRACION.Documents
             int exCode = migrationRS.Fields.Item("ExCode").Value.ToInt32();
             int tipoDoc = migrationRS.Fields.Item("TipoDocumento").Value.ToInt32();
             int etapa = migrationRS.Fields.Item("Etapa").Value.ToInt32();
-            int idFactura = migrationRS.Fields.Item("IdFactura").Value.ToInt32();
+            int idFacturaWebMigracion = migrationRS.Fields.Item("IdFacturaWebMigracion").Value.ToInt32();
+            var asdfasf = migrationRS.Fields.Item("DocDate").Value.ToSafeString();
+
+            String _aperturaCodigo = migrationRS.Fields.Item("Code").Value.ToSafeString();
+
             ADODB.Recordset updateRS = new ADODB.Recordset();
             try
             {
@@ -81,64 +87,59 @@ namespace SICER.MIGRACION.Documents
                 switch (docSubType)
                 {
                     case 18:
+                    case 181:
+                    default:
                         invoice = Company.GetBusinessObject(SAPbobsCOM.BoObjectTypes.oPurchaseInvoices);
                         break;
                     case 19:
                         invoice = Company.GetBusinessObject(SAPbobsCOM.BoObjectTypes.oPurchaseCreditNotes);
                         break;
-                    case 181:
-                        invoice = Company.GetBusinessObject(SAPbobsCOM.BoObjectTypes.oPurchaseInvoices);
-                        break;
-                    default:
-                        invoice = Company.GetBusinessObject(SAPbobsCOM.BoObjectTypes.oPurchaseInvoices);
-                        break;
                 }
 
-                invoice.ControlAccount = GetControlAccount(tipoDocumentoWeb, invoice.DocCurrency);
+                invoice.Indicator = migrationRS.Fields.Item("U_BPP_MDTD").Value.ToSafeString();
+                invoice.ControlAccount = migrationRS.Fields.Item("ControlAccount").Value.ToSafeString();
                 invoice.Series = (Int32)migrationRS.Fields.Item("Series").Value;
                 invoice.DocType = SAPbobsCOM.BoDocumentTypes.dDocument_Service;
                 invoice.CardCode = migrationRS.Fields.Item("CardCode").Value.ToSafeString();
                 invoice.DocCurrency = migrationRS.Fields.Item("DocCurrency").Value.ToSafeString();
                 invoice.JournalMemo = migrationRS.Fields.Item("JournalMemo").Value.ToSafeString();
                 invoice.Comments = migrationRS.Fields.Item("Asunto").Value.ToSafeString();
-                invoice.PaymentMethod = migrationRS.Fields.Item("MetodoPago").Value.ToSafeString();
+                invoice.PaymentMethod = migrationRS.Fields.Item("PaymentMethod").Value.ToSafeString();
                 invoice.NumAtCard = migrationRS.Fields.Item("NumAtCard").Value.ToSafeString();
                 invoice.FolioPrefixString = migrationRS.Fields.Item("FolioPref").Value.ToSafeString();
                 invoice.FolioNumber = migrationRS.Fields.Item("FolioNum").Value.ToInt32();
-                invoice.DocDate = DateTime.ParseExact(migrationRS.Fields.Item("DocDate").Value.ToSafeString(), "yyyyMMdd", System.Globalization.CultureInfo.InvariantCulture);
-                invoice.DocDueDate = DateTime.ParseExact(migrationRS.Fields.Item("DocDueDate").Value.ToSafeString(), "yyyyMMdd", System.Globalization.CultureInfo.InvariantCulture);
-                invoice.TaxDate = DateTime.ParseExact(migrationRS.Fields.Item("TaxDate").Value.ToSafeString(), "yyyyMMdd", System.Globalization.CultureInfo.InvariantCulture);
-                invoice.UserFields.Fields.Item("U_BPP_MDTD").Value = migrationRS.Fields.Item("U_BPP_MDTD").Value;
-                invoice.UserFields.Fields.Item("U_ExCode").Value = exCode.ToString();
-                invoice.UserFields.Fields.Item("U_Etapa").Value = etapa.ToString();
-                invoice.UserFields.Fields.Item("U_WebType").Value = tipoDoc.ToString();
-
-
-                String query = INVOICES_SP_LINES + "'" + exCode + "', '" + tipoDoc + "', '" + etapa + "', '" + migrationRS.Fields.Item("IdFactura").Value + "'";
-                ADODB.Recordset lines = new SQLConnection().DoQuery(query);
-                while (!lines.EOF)
+                invoice.DocDate = DateTime.ParseExact(migrationRS.Fields.Item("DocDate").Value.ToSafeString(), "yyyy-MM-dd", System.Globalization.CultureInfo.InvariantCulture);
+                invoice.DocDueDate = DateTime.ParseExact(migrationRS.Fields.Item("DocDueDate").Value.ToSafeString(), "yyyy-MM-dd", System.Globalization.CultureInfo.InvariantCulture);
+                invoice.TaxDate = DateTime.ParseExact(migrationRS.Fields.Item("TaxDate").Value.ToSafeString(), "yyyy-MM-dd", System.Globalization.CultureInfo.InvariantCulture);
+                try
                 {
-                    invoice.Lines.AccountCode = lines.Fields.Item("AccountCode").Value.ToSafeString();
-                    invoice.Lines.TaxCode = lines.Fields.Item("TaxCode").Value.ToSafeString();
-                    invoice.Lines.LineTotal = Convert.ToDouble(lines.Fields.Item("LineTotal").Value);
-                    invoice.Lines.CostingCode = lines.Fields.Item("CostingCode").Value.ToSafeString();
-                    invoice.Lines.CostingCode2 = lines.Fields.Item("CostingCode2").Value.ToSafeString();
-                    invoice.Lines.CostingCode3 = lines.Fields.Item("CostingCode3").Value.ToSafeString();
-                    invoice.Lines.CostingCode4 = lines.Fields.Item("CostingCode4").Value.ToSafeString();
-                    invoice.Lines.CostingCode5 = lines.Fields.Item("CostingCode5").Value.ToSafeString(); ;
-                    invoice.Lines.ItemDescription = lines.Fields.Item("Description").Value.ToSafeString();
-                    invoice.Lines.UserFields.Fields.Item("U_MSS_ORD").ValidValue = lines.Fields.Item("PartidaPresupuestal").Value.ToSafeString();  
-
-                    if (migrationRS.Fields.Item("U_BPP_MDTD").Value.ToSafeString() == TipoDocumentoSunat.Devolucion.GetPrefix())
-                        invoice.Lines.AccountCode = lines.Fields.Item("AccountCodeDevolucion").Value.ToSafeString();
-
-                    invoice.Lines.Add();
-                    lines.MoveNext();
+                    //invoice.UserFields.Fields.Item("U_BPP_MDTD").Value = migrationRS.Fields.Item("U_BPP_MDTD").Value;
+                    invoice.UserFields.Fields.Item("U_ExCode").Value = exCode.ToString();
+                    invoice.UserFields.Fields.Item("U_Etapa").Value = etapa.ToString();
+                    invoice.UserFields.Fields.Item("U_WebType").Value = tipoDoc.ToString();
                 }
+                catch (Exception ex)
+                {
+
+                }
+
+                //DOCUMENT LINES
+                invoice.Lines.AccountCode = migrationRS.Fields.Item("AccountCode").Value.ToSafeString();
+                invoice.Lines.TaxCode = migrationRS.Fields.Item("TaxCode").Value.ToSafeString();
+                invoice.Lines.LineTotal = Convert.ToDouble(migrationRS.Fields.Item("LineTotal").Value);
+                invoice.Lines.CostingCode = migrationRS.Fields.Item("CostingCode").Value.ToSafeString();
+                invoice.Lines.CostingCode2 = migrationRS.Fields.Item("CostingCode2").Value.ToSafeString();
+                invoice.Lines.CostingCode3 = migrationRS.Fields.Item("CostingCode3").Value.ToSafeString();
+                invoice.Lines.CostingCode4 = migrationRS.Fields.Item("CostingCode4").Value.ToSafeString();
+                invoice.Lines.CostingCode5 = migrationRS.Fields.Item("CostingCode5").Value.ToSafeString(); ;
+                invoice.Lines.ItemDescription = migrationRS.Fields.Item("Description").Value.ToSafeString();
+                invoice.Lines.UserFields.Fields.Item("U_MSS_ORD").Value = migrationRS.Fields.Item("U_MSS_ORD").Value.ToSafeString();
+
+                invoice.Lines.Add();
+
                 int totalLines = invoice.Lines.Count;
                 double documentTotal = invoice.DocTotal;
                 Company.StartTransaction();
-
 
                 if (invoice.Add() == 0)
                 {
@@ -151,11 +152,12 @@ namespace SICER.MIGRACION.Documents
                     }
                     else
                     {
-                        shouldProceed = payInvoice(Company, newDocEntry, isInvoice);
+                        shouldProceed = payInvoice(Company, newDocEntry, isInvoice, _aperturaCodigo);
                     }
                     if (shouldProceed)
                     {
-                        updateRS = new SQLConnection().DoQuery("UPDATE " + INVOICES_TABLE + " SET INT_Estado = 'P' WHERE IdFactura = " + idFactura + " AND ExCode = " + exCode + " AND TipoDocumento = " + tipoDoc + " AND Etapa = " + etapa);
+                        UpdateFacturaWebMigracion(idFacturaWebMigracion, "P", null, newDocEntry, ref updateRS);
+                        //updateRS = new SQLConnection().DoQuery("UPDATE " + INVOICES_TABLE + " SET INT_Estado = 'P' WHERE IdFactura = " + idFacturaWebMigracion + " AND ExCode = " + exCode + " AND TipoDocumento = " + tipoDoc + " AND Etapa = " + etapa);
                         Company.EndTransaction(SAPbobsCOM.BoWfTransOpt.wf_Commit);
                     }
                     else
@@ -164,7 +166,10 @@ namespace SICER.MIGRACION.Documents
                         {
                             Company.EndTransaction(SAPbobsCOM.BoWfTransOpt.wf_RollBack);
                         }
-                        updateRS = new SQLConnection().DoQuery("UPDATE " + INVOICES_TABLE + " SET INT_Estado = 'E', INT_Error = '" + Company.GetLastErrorDescription().Replace('\'', ' ').Substring(0, Company.GetLastErrorDescription().ToString().Length > 200 ? 190 : Company.GetLastErrorDescription().ToString().Length) + "' WHERE IdFactura = " + idFactura + " AND ExCode = " + exCode + " AND TipoDocumento = " + tipoDoc + " AND Etapa = " + etapa);
+
+                        String error = Company.GetLastErrorDescription().Replace('\'', ' ').Substring(0, Company.GetLastErrorDescription().ToString().Length > 200 ? 190 : Company.GetLastErrorDescription().ToString().Length);
+                        UpdateFacturaWebMigracion(idFacturaWebMigracion, "E", error, newDocEntry, ref updateRS);
+                        //updateRS = new SQLConnection().DoQuery("UPDATE " + INVOICES_TABLE + " SET INT_Estado = 'E', INT_Error = '" + Company.GetLastErrorDescription().Replace('\'', ' ').Substring(0, Company.GetLastErrorDescription().ToString().Length > 200 ? 190 : Company.GetLastErrorDescription().ToString().Length) + "' WHERE IdFactura = " + idFacturaWebMigracion + " AND ExCode = " + exCode + " AND TipoDocumento = " + tipoDoc + " AND Etapa = " + etapa);
                     }
                 }
                 else
@@ -173,7 +178,11 @@ namespace SICER.MIGRACION.Documents
                     {
                         Company.EndTransaction(SAPbobsCOM.BoWfTransOpt.wf_RollBack);
                     }
-                    updateRS = new SQLConnection().DoQuery("UPDATE " + INVOICES_TABLE + " SET INT_Estado = 'E', INT_Error = '" + Company.GetLastErrorDescription().Replace('\'', ' ').Substring(0, Company.GetLastErrorDescription().ToString().Length > 200 ? 190 : Company.GetLastErrorDescription().ToString().Length) + "' WHERE IdFactura = " + idFactura + " AND ExCode = " + exCode + " AND TipoDocumento = " + tipoDoc + " AND Etapa = " + etapa);
+
+                    String error = Company.GetLastErrorDescription().Replace('\'', ' ').Substring(0, Company.GetLastErrorDescription().ToString().Length > 200 ? 190 : Company.GetLastErrorDescription().ToString().Length);
+                    UpdateFacturaWebMigracion(idFacturaWebMigracion, "E", error, null, ref updateRS);
+
+                    //updateRS = new SQLConnection().DoQuery("UPDATE " + INVOICES_TABLE + " SET INT_Estado = 'E', INT_Error = '" + Company.GetLastErrorDescription().Replace('\'', ' ').Substring(0, Company.GetLastErrorDescription().ToString().Length > 200 ? 190 : Company.GetLastErrorDescription().ToString().Length) + "' WHERE IdFactura = " + idFacturaWebMigracion + " AND ExCode = " + exCode + " AND TipoDocumento = " + tipoDoc + " AND Etapa = " + etapa);
                 }
             }
             catch (Exception e)
@@ -182,12 +191,16 @@ namespace SICER.MIGRACION.Documents
                 {
                     Company.EndTransaction(SAPbobsCOM.BoWfTransOpt.wf_RollBack);
                 }
+
                 ExceptionHelper.LogException(e);
-                updateRS = new SQLConnection().DoQuery("UPDATE " + INVOICES_TABLE + " SET INT_Estado = 'E', INT_Error = '" + e.ToString().Replace('\'', ' ').Substring(0, e.ToString().Length > 200 ? 190 : e.ToString().Length) + "' WHERE IdFactura = " + idFactura + " AND ExCode = " + exCode + " AND TipoDocumento = " + tipoDoc + " AND Etapa = " + etapa);
+
+                String error = Company.GetLastErrorDescription().Replace('\'', ' ').Substring(0, Company.GetLastErrorDescription().ToString().Length > 200 ? 190 : Company.GetLastErrorDescription().ToString().Length);
+                UpdateFacturaWebMigracion(idFacturaWebMigracion, "E", error, null, ref updateRS);
+                //updateRS = new SQLConnection().DoQuery("UPDATE " + INVOICES_TABLE + " SET INT_Estado = 'E', INT_Error = '" + e.ToString().Replace('\'', ' ').Substring(0, e.ToString().Length > 200 ? 190 : e.ToString().Length) + "' WHERE IdFactura = " + idFacturaWebMigracion + " AND ExCode = " + exCode + " AND TipoDocumento = " + tipoDoc + " AND Etapa = " + etapa);
             }
         }
 
-        private bool payInvoice(SAPbobsCOM.Company Company, int docEntry, bool isInvoice)
+        private bool payInvoice(SAPbobsCOM.Company Company, int docEntry, bool isInvoice, String _aperturaCodigo)
         {
 
             SAPbobsCOM.Payments payment = Company.GetBusinessObject(SAPbobsCOM.BoObjectTypes.oVendorPayments);
@@ -196,11 +209,8 @@ namespace SICER.MIGRACION.Documents
 
             ADODB.Recordset stageOneAccount = new ADODB.Recordset();
 
-            //String query = "EXEC SEI_ATW_CuentasPago " + doc.UserFields.Fields.Item("U_WebType").Value + ", " + doc.UserFields.Fields.Item("U_ExCode").Value;
-            String query = "EXEC  " + "MSS_SP_SICER_CUENTASPAGO" + " " + doc.UserFields.Fields.Item("U_WebType").Value + ", " + doc.UserFields.Fields.Item("U_ExCode").Value;
-
+            String query = "EXEC  " + "MSS_SP_SICER_CUENTASPAGO '" + _aperturaCodigo + "'";
             stageOneAccount = new SQLConnection().DoQuery(query);
-
 
             payment.CardCode = doc.CardCode;
             payment.DocDate = doc.DocDate;
@@ -208,8 +218,9 @@ namespace SICER.MIGRACION.Documents
             payment.DueDate = doc.DocDueDate;
             payment.TransferDate = doc.DocDate;
             payment.DocCurrency = doc.DocCurrency;
+            payment.CounterReference = _aperturaCodigo;
             // payment.Series = stageOneAccount.Fields.Item("Series").Value.ToInt32(); ;//34 PERU Y CONSULTING, ROOM 32
-            payment.TransferAccount = stageOneAccount.Fields.Item("AcctCode").Value.ToSafeString();
+            payment.TransferAccount = stageOneAccount.Fields.Item("AccountCode").Value.ToSafeString();
             payment.Remarks = doc.JournalMemo;
             payment.JournalRemarks = doc.JournalMemo;
 
@@ -229,6 +240,11 @@ namespace SICER.MIGRACION.Documents
             }
             payment.TransferSum = doc.DocCurrency.Equals("SOL") ? doc.DocTotal : doc.DocTotalFc;
             return payment.Add() == 0;
+        }
+
+        public void UpdateFacturaWebMigracion(Int32 idFacturaMigracion, String INT_Estado, String INT_Error, Int32? DocEntry, ref ADODB.Recordset updateRS)
+        {
+            updateRS = new SQLConnection().DoQuery("UPDATE " + INVOICES_TABLE + " SET INT_Estado = '" + INT_Estado + "', INT_Error = '" + INT_Error + "', DocEntry=" + (DocEntry ?? 0) + " WHERE IdFacturaWebMigracion = " + idFacturaMigracion);
         }
     }
 }

@@ -6,7 +6,7 @@ using System.Linq;
 using System.Text;
 namespace SICER.MIGRACION.Documents
 {
-    abstract class MDocument : IDisposable
+    public abstract class MDocument : IDisposable
     {
         protected readonly string migrationSP;
         protected readonly string keyField;

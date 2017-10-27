@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection;
 using System.Text;
 
 namespace SICER.MIGRACION.Helper
@@ -12,15 +13,17 @@ namespace SICER.MIGRACION.Helper
         public static void LogException(Exception exc)
         {
 
+            String route = @"C:\LOG\" + GetProjectName();
             String fileName = DateTime.Now.ToString("yyyy-MM-dd") + ".txt";
-            //String logFile = @"D:\" + fileName;
-            String logFile = @"C:\LOG\LAST" + fileName;
+            String logFile = route + @"\" + fileName;
+
+            System.IO.Directory.CreateDirectory(route);
 
             if (!System.IO.File.Exists(logFile))
                 System.IO.File.Create(logFile).Close();
 
             System.IO.StreamWriter sw = new System.IO.StreamWriter(logFile, true);
-            sw.WriteLine("********** {0} **********", DateTime.Now);
+            sw.WriteLine(" * ********* {0} **********", DateTime.Now);
 
             sw.Write("Exception Type: ");
             sw.WriteLine(exc.GetType().ToString());
@@ -49,8 +52,17 @@ namespace SICER.MIGRACION.Helper
             sw.Close();
         }
 
+        private static string GetProjectName()
+        {
+            try
+            {
+                return Assembly.GetCallingAssembly().GetName().Name;
 
-        private static String fileName = DateTime.Now.ToString("yyyy-MM-dd") + ".txt";
-        private static String logFile = @"C:\" + fileName;
+            }
+            catch (Exception)
+            {
+                return "UNDEFINED";
+            }
+        }
     }
 }
