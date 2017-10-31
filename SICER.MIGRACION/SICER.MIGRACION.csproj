@@ -87,7 +87,8 @@
       <HintPath>..\packages\Interop.SAPbobsCOM.dll</HintPath>
       <EmbedInteropTypes>True</EmbedInteropTypes>
     </Reference>
-    <Reference Include="MSS.TAWA.HP">
+    <Reference Include="MSS.TAWA.HP, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
       <HintPath>..\packages\MSS.TAWA.HP.dll</HintPath>
     </Reference>
     <Reference Include="System" />

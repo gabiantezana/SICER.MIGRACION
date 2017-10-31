@@ -3,6 +3,7 @@ using SICER.MIGRACION.Helper;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection;
 using System.Text;
 
 namespace SICER.MIGRACION.Documents
@@ -111,16 +112,25 @@ namespace SICER.MIGRACION.Documents
                 invoice.DocDate = DateTime.ParseExact(migrationRS.Fields.Item("DocDate").Value.ToSafeString(), "yyyy-MM-dd", System.Globalization.CultureInfo.InvariantCulture);
                 invoice.DocDueDate = DateTime.ParseExact(migrationRS.Fields.Item("DocDueDate").Value.ToSafeString(), "yyyy-MM-dd", System.Globalization.CultureInfo.InvariantCulture);
                 invoice.TaxDate = DateTime.ParseExact(migrationRS.Fields.Item("TaxDate").Value.ToSafeString(), "yyyy-MM-dd", System.Globalization.CultureInfo.InvariantCulture);
+
                 try
                 {
-                    //invoice.UserFields.Fields.Item("U_BPP_MDTD").Value = migrationRS.Fields.Item("U_BPP_MDTD").Value;
+                    //LOCALIZACIÓN MINAS
+                    invoice.UserFields.Fields.Item("U_MSSL_TOP").Value = "02";
+                    invoice.UserFields.Fields.Item("U_MSSL_TBI").Value = "A";
+
+                    if (migrationRS.Fields.Item("FolioPref").Value.ToSafeString() == TipoDocumentoSunat.ReciboDeHonorarios.GetCodigoSunat())
+                        invoice.UserFields.Fields.Item("U_MSSL_TBI").Value = "R";
+
+
                     invoice.UserFields.Fields.Item("U_ExCode").Value = exCode.ToString();
                     invoice.UserFields.Fields.Item("U_Etapa").Value = etapa.ToString();
                     invoice.UserFields.Fields.Item("U_WebType").Value = tipoDoc.ToString();
+
                 }
                 catch (Exception ex)
                 {
-
+                    ExceptionHelper.LogException(ex);
                 }
 
                 //DOCUMENT LINES
@@ -211,6 +221,7 @@ namespace SICER.MIGRACION.Documents
 
             String query = "EXEC  " + "MSS_SP_SICER_CUENTASPAGO '" + _aperturaCodigo + "'";
             stageOneAccount = new SQLConnection().DoQuery(query);
+            ExceptionHelper.LogException(new Exception(query));
 
             payment.CardCode = doc.CardCode;
             payment.DocDate = doc.DocDate;
@@ -219,13 +230,13 @@ namespace SICER.MIGRACION.Documents
             payment.TransferDate = doc.DocDate;
             payment.DocCurrency = doc.DocCurrency;
             payment.CounterReference = _aperturaCodigo;
-            // payment.Series = stageOneAccount.Fields.Item("Series").Value.ToInt32(); ;//34 PERU Y CONSULTING, ROOM 32
             payment.TransferAccount = stageOneAccount.Fields.Item("AccountCode").Value.ToSafeString();
             payment.Remarks = doc.JournalMemo;
             payment.JournalRemarks = doc.JournalMemo;
 
             payment.Invoices.InvoiceType = isInvoice ? SAPbobsCOM.BoRcptInvTypes.it_PurchaseInvoice : SAPbobsCOM.BoRcptInvTypes.it_PurchaseCreditNote;
             payment.Invoices.DocEntry = docEntry;
+            payment.UserFields.Fields.Item("U_MSSL_TMP").Value = "008";
 
 
             switch (doc.DocCurrency)

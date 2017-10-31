@@ -16,19 +16,19 @@
         "Entry"
         {
         "MsmKey" = "8:_4F4A309B969E11E47A8E502FC4096421"
-        "OwnerKey" = "8:_65453E098FDA454490553D46451514B5"
-        "MsmSig" = "8:_UNDEFINED"
-        }
-        "Entry"
-        {
-        "MsmKey" = "8:_65453E098FDA454490553D46451514B5"
-        "OwnerKey" = "8:_UNDEFINED"
+        "OwnerKey" = "8:_8BD34386F52041228F456D2CE1B0F2CE"
         "MsmSig" = "8:_UNDEFINED"
         }
         "Entry"
         {
         "MsmKey" = "8:_7D39C9B63A543FFFCB610BE5BE193595"
-        "OwnerKey" = "8:_65453E098FDA454490553D46451514B5"
+        "OwnerKey" = "8:_8BD34386F52041228F456D2CE1B0F2CE"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_8BD34386F52041228F456D2CE1B0F2CE"
+        "OwnerKey" = "8:_UNDEFINED"
         "MsmSig" = "8:_UNDEFINED"
         }
         "Entry"
@@ -40,7 +40,7 @@
         "Entry"
         {
         "MsmKey" = "8:_UNDEFINED"
-        "OwnerKey" = "8:_65453E098FDA454490553D46451514B5"
+        "OwnerKey" = "8:_8BD34386F52041228F456D2CE1B0F2CE"
         "MsmSig" = "8:_UNDEFINED"
         }
         "Entry"
@@ -67,6 +67,22 @@
         "PrivateKeyFile" = "8:"
         "TimeStampServer" = "8:"
         "InstallerBootstrapper" = "3:2"
+            "BootstrapperCfg:{63ACBE69-63AA-4F98-B2B6-99F9E24495F2}"
+            {
+            "Enabled" = "11:TRUE"
+            "PromptEnabled" = "11:TRUE"
+            "PrerequisitesLocation" = "2:1"
+            "Url" = "8:"
+            "ComponentsUrl" = "8:"
+                "Items"
+                {
+                    "{EDC2488A-8267-493A-A98E-7D9C3B36CDF3}:.NETFramework,Version=v4.6.1"
+                    {
+                    "Name" = "8:Microsoft .NET Framework 4.6.1 (x86 and x64)"
+                    "ProductCode" = "8:.NETFramework,Version=v4.6.1"
+                    }
+                }
+            }
         }
         "Release"
         {
@@ -83,65 +99,73 @@
         "PrivateKeyFile" = "8:"
         "TimeStampServer" = "8:"
         "InstallerBootstrapper" = "3:2"
+            "BootstrapperCfg:{63ACBE69-63AA-4F98-B2B6-99F9E24495F2}"
+            {
+            "Enabled" = "11:TRUE"
+            "PromptEnabled" = "11:TRUE"
+            "PrerequisitesLocation" = "2:1"
+            "Url" = "8:"
+            "ComponentsUrl" = "8:"
+            }
         }
     }
     "Deployable"
     {
         "CustomAction"
         {
-            "{4AA51A2D-7D85-4A59-BA75-B0809FC8B380}:_4082E84FFD61487B9040184EF721825E"
+            "{4AA51A2D-7D85-4A59-BA75-B0809FC8B380}:_27F0321D7C294436A0367FCA130DDF6F"
             {
             "Name" = "8:Primary output from SICER.MIGRACION (Active)"
             "Condition" = "8:"
-            "Object" = "8:_65453E098FDA454490553D46451514B5"
+            "Object" = "8:_8BD34386F52041228F456D2CE1B0F2CE"
             "FileType" = "3:2"
             "InstallAction" = "3:2"
             "Arguments" = "8:"
             "EntryPoint" = "8:"
             "Sequence" = "3:1"
-            "Identifier" = "8:_209236F9_B97E_4D34_9F41_BDFBF299E739"
+            "Identifier" = "8:_F3AA89C5_9F2F_463F_A11D_1068C0ACAD47"
             "InstallerClass" = "11:TRUE"
             "CustomActionData" = "8:"
             }
-            "{4AA51A2D-7D85-4A59-BA75-B0809FC8B380}:_7F966B330D624D6196EEF7503E2EC854"
+            "{4AA51A2D-7D85-4A59-BA75-B0809FC8B380}:_52274F0987EF4C91894BB0EB99A1B15A"
             {
             "Name" = "8:Primary output from SICER.MIGRACION (Active)"
             "Condition" = "8:"
-            "Object" = "8:_65453E098FDA454490553D46451514B5"
-            "FileType" = "3:2"
-            "InstallAction" = "3:4"
-            "Arguments" = "8:"
-            "EntryPoint" = "8:"
-            "Sequence" = "3:1"
-            "Identifier" = "8:_E272338D_CD8F_4F99_9FBF_82F30EDFCA39"
-            "InstallerClass" = "11:TRUE"
-            "CustomActionData" = "8:"
-            }
-            "{4AA51A2D-7D85-4A59-BA75-B0809FC8B380}:_B2479FEE875046F98BFD88222FDEB4E7"
-            {
-            "Name" = "8:Primary output from SICER.MIGRACION (Active)"
-            "Condition" = "8:"
-            "Object" = "8:_65453E098FDA454490553D46451514B5"
-            "FileType" = "3:2"
-            "InstallAction" = "3:3"
-            "Arguments" = "8:"
-            "EntryPoint" = "8:"
-            "Sequence" = "3:1"
-            "Identifier" = "8:_A09DFC8E_2CE1_4225_9F6C_7CEC432522CE"
-            "InstallerClass" = "11:TRUE"
-            "CustomActionData" = "8:"
-            }
-            "{4AA51A2D-7D85-4A59-BA75-B0809FC8B380}:_DA1FA3234DE3481DBEBD7C4CA7932715"
-            {
-            "Name" = "8:Primary output from SICER.MIGRACION (Active)"
-            "Condition" = "8:"
-            "Object" = "8:_65453E098FDA454490553D46451514B5"
+            "Object" = "8:_8BD34386F52041228F456D2CE1B0F2CE"
             "FileType" = "3:2"
             "InstallAction" = "3:1"
             "Arguments" = "8:"
             "EntryPoint" = "8:"
             "Sequence" = "3:1"
-            "Identifier" = "8:_029A3919_775F_4E1B_844A_233680557223"
+            "Identifier" = "8:_EDD96976_0EE1_48A9_B8BC_141D60B441BC"
+            "InstallerClass" = "11:TRUE"
+            "CustomActionData" = "8:"
+            }
+            "{4AA51A2D-7D85-4A59-BA75-B0809FC8B380}:_63C5C3E185ED4C9EA2C612B11DF81A86"
+            {
+            "Name" = "8:Primary output from SICER.MIGRACION (Active)"
+            "Condition" = "8:"
+            "Object" = "8:_8BD34386F52041228F456D2CE1B0F2CE"
+            "FileType" = "3:2"
+            "InstallAction" = "3:4"
+            "Arguments" = "8:"
+            "EntryPoint" = "8:"
+            "Sequence" = "3:1"
+            "Identifier" = "8:_F65D179F_0336_441F_8C59_CA8F9C9EA81C"
+            "InstallerClass" = "11:TRUE"
+            "CustomActionData" = "8:"
+            }
+            "{4AA51A2D-7D85-4A59-BA75-B0809FC8B380}:_B51E178D54CF4B0D96D24475B29819E2"
+            {
+            "Name" = "8:Primary output from SICER.MIGRACION (Active)"
+            "Condition" = "8:"
+            "Object" = "8:_8BD34386F52041228F456D2CE1B0F2CE"
+            "FileType" = "3:2"
+            "InstallAction" = "3:3"
+            "Arguments" = "8:"
+            "EntryPoint" = "8:"
+            "Sequence" = "3:1"
+            "Identifier" = "8:_9358730B_E1A2_48AB_9718_462C39EBEAB3"
             "InstallerClass" = "11:TRUE"
             "CustomActionData" = "8:"
             }
@@ -287,7 +311,7 @@
         "Name" = "8:Microsoft Visual Studio"
         "ProductName" = "8:SICER.MIGRACION.SETUP3"
         "ProductCode" = "8:{45DBC863-CF7B-47DC-8B17-B7B859766DE0}"
-        "PackageCode" = "8:{2011C182-6008-48E4-AC30-092582404E2F}"
+        "PackageCode" = "8:{D0669F04-7FA4-43B3-A8E5-F0D1603A89FE}"
         "UpgradeCode" = "8:{097DD458-CE74-4C16-9DA0-7F7239B64501}"
         "AspNetVersion" = "8:4.0.30319.0"
         "RestartWWWService" = "11:FALSE"
@@ -806,7 +830,7 @@
         }
         "ProjectOutput"
         {
-            "{5259A561-127C-4D43-A0A1-72F10C7B3BF8}:_65453E098FDA454490553D46451514B5"
+            "{5259A561-127C-4D43-A0A1-72F10C7B3BF8}:_8BD34386F52041228F456D2CE1B0F2CE"
             {
             "SourcePath" = "8:..\\SICER.MIGRACION\\obj\\x86\\Debug\\SICER.MIGRACION.exe"
             "TargetName" = "8:"
