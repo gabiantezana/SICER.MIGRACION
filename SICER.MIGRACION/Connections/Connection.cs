@@ -28,7 +28,8 @@ namespace SICER.MIGRACION.Connections
                                DBUser = header.Element("DBUser").Value,
                                DBPassword = header.Element("DBPassword").Value,
                                SBOUser = header.Element("SBOUser").Value,
-                               SBOPassword = header.Element("SBOPassword").Value
+                               SBOPassword = header.Element("SBOPassword").Value,
+                               DbServerType = header.Element("DbServerType").Value
                            };
             if (xmlNodes != null)
                 if (xmlNodes.ToList().Count <= 0)
@@ -45,7 +46,7 @@ namespace SICER.MIGRACION.Connections
                 company.UserName = xmlNode.SBOUser;
                 company.Password = xmlNode.SBOPassword;
                 company.language = SAPbobsCOM.BoSuppLangs.ln_Spanish;
-                company.DbServerType = SAPbobsCOM.BoDataServerTypes.dst_HANADB;
+                company.DbServerType = (SAPbobsCOM.BoDataServerTypes)Enum.Parse(typeof(SAPbobsCOM.BoDataServerTypes), xmlNode.DbServerType);
                 if (company.Connect() == 0)
                 {
                     companies.Add(company.CompanyDB, company);
