@@ -4,6 +4,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
+using System.Runtime.CompilerServices;
 using System.Text;
 
 namespace SICER.MIGRACION.Documents
@@ -28,45 +29,6 @@ namespace SICER.MIGRACION.Documents
                 migrateDocuments(Company, migrationRS);
                 migrationRS.MoveNext();
             }
-        }
-
-        private String GetControlAccount(TipoDocumentoWeb tipoDocumentoWeb, String docCurrency)
-        {
-            /*--------------------------------------GET CONTROL ACCOUNT/* cabecera--------------------------------------*/
-            String U_codigo = String.Empty;
-            switch (docCurrency)
-            {
-                case "SOL":
-                case "S/":
-                case "SOLES":
-                    switch (tipoDocumentoWeb)
-                    {
-                        case TipoDocumentoWeb.CajaChica: U_codigo = "DPRMN"; break;
-                        case TipoDocumentoWeb.EntregaRendir: U_codigo = "ERCTAMN"; break;
-                        case TipoDocumentoWeb.Reembolso: U_codigo = "REDPRMN"; break;
-                    }
-                    break;
-                default:
-                    switch (tipoDocumentoWeb)
-                    {
-                        case TipoDocumentoWeb.CajaChica: U_codigo = "DPRME"; break;
-                        case TipoDocumentoWeb.EntregaRendir: U_codigo = "ERCTAME"; break;
-                        case TipoDocumentoWeb.Reembolso: U_codigo = "REDPRME"; break;
-                    }
-                    break;
-            }
-
-            String queryControlAccount = "EXEC MSS_SP_SICER_GETACCOUNTFROMCONFIG '" + tipoDocumentoWeb.GetPrefix() + "' , '" + U_codigo + "'";
-            ADODB.Recordset getAccountRS = new SQLConnection().DoQuery(queryControlAccount);
-
-            String _controlAccount = String.Empty;
-            if (!getAccountRS.EOF)
-                _controlAccount = getAccountRS.Fields.Item("U_CuentaContable").Value.ToSafeString();
-
-            if (String.IsNullOrEmpty(_controlAccount))
-                throw new Exception("No se encontró ControlAccount para documento en la tabla de configuración. Query: " + queryControlAccount);
-
-            return _controlAccount;
         }
 
         protected void migrateDocuments(SAPbobsCOM.Company Company, ADODB.Recordset migrationRS)
@@ -99,7 +61,8 @@ namespace SICER.MIGRACION.Documents
 
                 invoice.Indicator = migrationRS.Fields.Item("U_BPP_MDTD").Value.ToSafeString();
                 invoice.ControlAccount = migrationRS.Fields.Item("ControlAccount").Value.ToSafeString();
-                invoice.Series = (Int32)migrationRS.Fields.Item("Series").Value;
+                if (migrationRS.Fields.Item("Series").Value.ToInt32() != 0)
+                    invoice.Series = (Int32)migrationRS.Fields.Item("Series").Value;
                 invoice.DocType = SAPbobsCOM.BoDocumentTypes.dDocument_Service;
                 invoice.CardCode = migrationRS.Fields.Item("CardCode").Value.ToSafeString();
                 invoice.DocCurrency = migrationRS.Fields.Item("DocCurrency").Value.ToSafeString();
@@ -113,25 +76,34 @@ namespace SICER.MIGRACION.Documents
                 invoice.DocDueDate = DateTime.ParseExact(migrationRS.Fields.Item("DocDueDate").Value.ToSafeString(), "yyyy-MM-dd", System.Globalization.CultureInfo.InvariantCulture);
                 invoice.TaxDate = DateTime.ParseExact(migrationRS.Fields.Item("TaxDate").Value.ToSafeString(), "yyyy-MM-dd", System.Globalization.CultureInfo.InvariantCulture);
 
+                //CAMPOS DE USUARIO
+                try
+                { invoice.UserFields.Fields.Item("U_MSSL_TOP").Value = "02"; }
+                catch (Exception ex) { ExceptionHelper.LogException(ex); }
+
+                try
+                { invoice.UserFields.Fields.Item("U_MSSL_TBI").Value = "A"; }
+                catch (Exception ex) { ExceptionHelper.LogException(ex); }
+
+                try
+                { invoice.UserFields.Fields.Item("U_ExCode").Value = exCode.ToString(); }
+                catch (Exception ex) { ExceptionHelper.LogException(ex); }
+
+                try
+                { invoice.UserFields.Fields.Item("U_Etapa").Value = etapa.ToString(); }
+                catch (Exception ex) { ExceptionHelper.LogException(ex); }
+
+                try
+                { invoice.UserFields.Fields.Item("U_WebType").Value = tipoDoc.ToString(); }
+                catch (Exception ex) { ExceptionHelper.LogException(ex); }
+
                 try
                 {
-                    //LOCALIZACIÓN MINAS
-                    invoice.UserFields.Fields.Item("U_MSSL_TOP").Value = "02";
-                    invoice.UserFields.Fields.Item("U_MSSL_TBI").Value = "A";
-
                     if (migrationRS.Fields.Item("FolioPref").Value.ToSafeString() == TipoDocumentoSunat.ReciboDeHonorarios.GetCodigoSunat())
                         invoice.UserFields.Fields.Item("U_MSSL_TBI").Value = "R";
-
-
-                    invoice.UserFields.Fields.Item("U_ExCode").Value = exCode.ToString();
-                    invoice.UserFields.Fields.Item("U_Etapa").Value = etapa.ToString();
-                    invoice.UserFields.Fields.Item("U_WebType").Value = tipoDoc.ToString();
-
                 }
-                catch (Exception ex)
-                {
-                    ExceptionHelper.LogException(ex);
-                }
+                catch (Exception ex) { ExceptionHelper.LogException(ex); }
+
 
                 //DOCUMENT LINES
                 invoice.Lines.AccountCode = migrationRS.Fields.Item("AccountCode").Value.ToSafeString();
@@ -143,12 +115,12 @@ namespace SICER.MIGRACION.Documents
                 invoice.Lines.CostingCode4 = migrationRS.Fields.Item("CostingCode4").Value.ToSafeString();
                 invoice.Lines.CostingCode5 = migrationRS.Fields.Item("CostingCode5").Value.ToSafeString(); ;
                 invoice.Lines.ItemDescription = migrationRS.Fields.Item("Description").Value.ToSafeString();
-                invoice.Lines.UserFields.Fields.Item("U_MSS_ORD").Value = migrationRS.Fields.Item("U_MSS_ORD").Value.ToSafeString();
+
+                try
+                { invoice.Lines.UserFields.Fields.Item("U_MSS_ORD").Value = migrationRS.Fields.Item("U_MSS_ORD").Value.ToSafeString(); }
+                catch (Exception ex) { ExceptionHelper.LogException(ex); }
 
                 invoice.Lines.Add();
-
-                int totalLines = invoice.Lines.Count;
-                double documentTotal = invoice.DocTotal;
                 Company.StartTransaction();
 
                 if (invoice.Add() == 0)
@@ -156,43 +128,33 @@ namespace SICER.MIGRACION.Documents
                     int newDocEntry = int.Parse(Company.GetNewObjectKey());
                     bool isInvoice = (docSubType != 19);
                     bool shouldProceed;
+
                     if (etapa == 1)
-                    {
                         shouldProceed = true;
-                    }
                     else
-                    {
                         shouldProceed = payInvoice(Company, newDocEntry, isInvoice, _aperturaCodigo);
-                    }
+
                     if (shouldProceed)
                     {
                         UpdateFacturaWebMigracion(idFacturaWebMigracion, "P", null, newDocEntry, ref updateRS);
-                        //updateRS = new SQLConnection().DoQuery("UPDATE " + INVOICES_TABLE + " SET INT_Estado = 'P' WHERE IdFactura = " + idFacturaWebMigracion + " AND ExCode = " + exCode + " AND TipoDocumento = " + tipoDoc + " AND Etapa = " + etapa);
                         Company.EndTransaction(SAPbobsCOM.BoWfTransOpt.wf_Commit);
                     }
                     else
                     {
                         if (Company.InTransaction)
-                        {
                             Company.EndTransaction(SAPbobsCOM.BoWfTransOpt.wf_RollBack);
-                        }
 
                         String error = Company.GetLastErrorDescription().Replace('\'', ' ').Substring(0, Company.GetLastErrorDescription().ToString().Length > 200 ? 190 : Company.GetLastErrorDescription().ToString().Length);
                         UpdateFacturaWebMigracion(idFacturaWebMigracion, "E", error, newDocEntry, ref updateRS);
-                        //updateRS = new SQLConnection().DoQuery("UPDATE " + INVOICES_TABLE + " SET INT_Estado = 'E', INT_Error = '" + Company.GetLastErrorDescription().Replace('\'', ' ').Substring(0, Company.GetLastErrorDescription().ToString().Length > 200 ? 190 : Company.GetLastErrorDescription().ToString().Length) + "' WHERE IdFactura = " + idFacturaWebMigracion + " AND ExCode = " + exCode + " AND TipoDocumento = " + tipoDoc + " AND Etapa = " + etapa);
                     }
                 }
                 else
                 {
                     if (Company.InTransaction)
-                    {
                         Company.EndTransaction(SAPbobsCOM.BoWfTransOpt.wf_RollBack);
-                    }
 
                     String error = Company.GetLastErrorDescription().Replace('\'', ' ').Substring(0, Company.GetLastErrorDescription().ToString().Length > 200 ? 190 : Company.GetLastErrorDescription().ToString().Length);
                     UpdateFacturaWebMigracion(idFacturaWebMigracion, "E", error, null, ref updateRS);
-
-                    //updateRS = new SQLConnection().DoQuery("UPDATE " + INVOICES_TABLE + " SET INT_Estado = 'E', INT_Error = '" + Company.GetLastErrorDescription().Replace('\'', ' ').Substring(0, Company.GetLastErrorDescription().ToString().Length > 200 ? 190 : Company.GetLastErrorDescription().ToString().Length) + "' WHERE IdFactura = " + idFacturaWebMigracion + " AND ExCode = " + exCode + " AND TipoDocumento = " + tipoDoc + " AND Etapa = " + etapa);
                 }
             }
             catch (Exception e)
@@ -204,53 +166,68 @@ namespace SICER.MIGRACION.Documents
 
                 ExceptionHelper.LogException(e);
 
-                String error = Company.GetLastErrorDescription().Replace('\'', ' ').Substring(0, Company.GetLastErrorDescription().ToString().Length > 200 ? 190 : Company.GetLastErrorDescription().ToString().Length);
+                //String error = Company.GetLastErrorDescription().Replace('\'', ' ').Substring(0, Company.GetLastErrorDescription().ToString().Length > 200 ? 190 : Company.GetLastErrorDescription().ToString().Length);
+                String error = e.ToString();
                 UpdateFacturaWebMigracion(idFacturaWebMigracion, "E", error, null, ref updateRS);
-                //updateRS = new SQLConnection().DoQuery("UPDATE " + INVOICES_TABLE + " SET INT_Estado = 'E', INT_Error = '" + e.ToString().Replace('\'', ' ').Substring(0, e.ToString().Length > 200 ? 190 : e.ToString().Length) + "' WHERE IdFactura = " + idFacturaWebMigracion + " AND ExCode = " + exCode + " AND TipoDocumento = " + tipoDoc + " AND Etapa = " + etapa);
             }
         }
 
         private bool payInvoice(SAPbobsCOM.Company Company, int docEntry, bool isInvoice, String _aperturaCodigo)
         {
-
-            SAPbobsCOM.Payments payment = Company.GetBusinessObject(SAPbobsCOM.BoObjectTypes.oVendorPayments);
-            SAPbobsCOM.Documents doc = isInvoice ? Company.GetBusinessObject(SAPbobsCOM.BoObjectTypes.oPurchaseInvoices) : Company.GetBusinessObject(SAPbobsCOM.BoObjectTypes.oPurchaseCreditNotes);
-            doc.GetByKey(docEntry);
-
-            ADODB.Recordset stageOneAccount = new ADODB.Recordset();
-
-            String query = "EXEC  " + "MSS_SP_SICER_CUENTASPAGO '" + _aperturaCodigo + "'";
-            stageOneAccount = new SQLConnection().DoQuery(query);
-            ExceptionHelper.LogException(new Exception(query));
-
-            payment.CardCode = doc.CardCode;
-            payment.DocDate = doc.DocDate;
-            payment.TaxDate = doc.TaxDate;
-            payment.DueDate = doc.DocDueDate;
-            payment.TransferDate = doc.DocDate;
-            payment.DocCurrency = doc.DocCurrency;
-            payment.CounterReference = _aperturaCodigo;
-            payment.TransferAccount = stageOneAccount.Fields.Item("AccountCode").Value.ToSafeString();
-            payment.Remarks = doc.JournalMemo;
-            payment.JournalRemarks = doc.JournalMemo;
-
-            payment.Invoices.InvoiceType = isInvoice ? SAPbobsCOM.BoRcptInvTypes.it_PurchaseInvoice : SAPbobsCOM.BoRcptInvTypes.it_PurchaseCreditNote;
-            payment.Invoices.DocEntry = docEntry;
-            payment.UserFields.Fields.Item("U_MSSL_TMP").Value = "008";
-
-
-            switch (doc.DocCurrency)
+            try
             {
-                case "SOL":
-                case "S/":
-                    payment.Invoices.SumApplied = doc.DocTotal;
-                    break;
-                default:
-                    payment.Invoices.AppliedFC = doc.DocTotalFc;
-                    break;
+                SAPbobsCOM.Payments payment = Company.GetBusinessObject(SAPbobsCOM.BoObjectTypes.oVendorPayments);
+                SAPbobsCOM.Documents doc = isInvoice
+                    ? Company.GetBusinessObject(SAPbobsCOM.BoObjectTypes.oPurchaseInvoices)
+                    : Company.GetBusinessObject(SAPbobsCOM.BoObjectTypes.oPurchaseCreditNotes);
+                doc.GetByKey(docEntry);
+
+                ADODB.Recordset stageOneAccount = new ADODB.Recordset();
+
+                String query = "EXEC  " + "MSS_SP_SICER_CUENTASPAGO '" + _aperturaCodigo + "'";
+                stageOneAccount = new SQLConnection().DoQuery(query);
+                ExceptionHelper.LogException(new Exception(query));
+
+                payment.CardCode = doc.CardCode;
+                payment.DocDate = doc.DocDate;
+                payment.TaxDate = doc.TaxDate;
+                payment.DueDate = doc.DocDueDate;
+                payment.TransferDate = doc.DocDate;
+                payment.DocCurrency = doc.DocCurrency;
+                payment.CounterReference = _aperturaCodigo;
+                payment.TransferAccount = stageOneAccount.Fields.Item("AccountCode").Value.ToSafeString();
+                payment.Remarks = doc.JournalMemo;
+                payment.JournalRemarks = doc.JournalMemo;
+
+                payment.Invoices.InvoiceType = isInvoice
+                    ? SAPbobsCOM.BoRcptInvTypes.it_PurchaseInvoice
+                    : SAPbobsCOM.BoRcptInvTypes.it_PurchaseCreditNote;
+                payment.Invoices.DocEntry = docEntry;
+
+                try
+                { payment.UserFields.Fields.Item("U_MSSL_TMP").Value = "008"; }
+                catch (Exception ex) { ExceptionHelper.LogException(ex); }
+               
+                switch (doc.DocCurrency)
+                {
+                    case "SOL":
+                    case "S/":
+                        payment.Invoices.SumApplied = doc.DocTotal;
+                        payment.TransferSum = doc.DocTotal;
+                        break;
+                    default:
+                        payment.Invoices.AppliedFC = doc.DocTotalFc;
+                        payment.TransferSum = doc.DocTotalFc;
+                        break;
+                }
+                return payment.Add() == 0;
             }
-            payment.TransferSum = doc.DocCurrency.Equals("SOL") ? doc.DocTotal : doc.DocTotalFc;
-            return payment.Add() == 0;
+            catch (Exception ex)
+            {
+                ExceptionHelper.LogException(ex);
+                throw;
+            }
+            
         }
 
         public void UpdateFacturaWebMigracion(Int32 idFacturaMigracion, String INT_Estado, String INT_Error, Int32? DocEntry, ref ADODB.Recordset updateRS)
