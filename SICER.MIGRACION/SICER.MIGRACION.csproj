@@ -91,6 +91,9 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\packages\MSS.TAWA.HP.dll</HintPath>
     </Reference>
+    <Reference Include="Newtonsoft.Json, Version=10.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <HintPath>..\packages\Newtonsoft.Json.10.0.3\lib\net45\Newtonsoft.Json.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.ComponentModel.DataAnnotations" />
     <Reference Include="System.configuration" />
@@ -111,14 +114,8 @@
     <Compile Include="Connections\SQLConnection.cs" />
     <Compile Include="Documents\BusinessPartners.cs" />
     <Compile Include="Documents\MDocument.cs" />
-    <Compile Include="Documents\Structs\ConceptBody.cs" />
-    <Compile Include="Documents\Structs\ConceptKey.cs" />
-    <Compile Include="Documents\Structs\SalesInvoices.cs" />
     <Compile Include="Documents\WebInvoices.cs" />
-    <Compile Include="Helper\ConstantHelper.cs" />
     <Compile Include="Helper\ConvertHelper.cs" />
-    <Compile Include="Helper\FunctionsHelper.cs" />
-    <Compile Include="Helper\QueryHelper.cs" />
     <Compile Include="MainTasks.cs">
       <SubType>Component</SubType>
     </Compile>
@@ -151,6 +148,9 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Conexion.xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Documents\Structs\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

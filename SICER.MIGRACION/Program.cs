@@ -1,6 +1,5 @@
 ﻿using SICER.MIGRACION.Connections;
 using SICER.MIGRACION.Documents;
-using SICER.MIGRACION.Documents.Structs;
 using System;
 using System.Collections.Generic;
 using System.Linq;

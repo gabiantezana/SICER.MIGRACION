@@ -3,6 +3,8 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using Newtonsoft.Json;
+using SAPbobsCOM;
 
 namespace SICER.MIGRACION.Connections
 {
@@ -53,7 +55,7 @@ namespace SICER.MIGRACION.Connections
                 }
                 else
                 {
-                    ExceptionHelper.LogException(new Exception(company.GetLastErrorDescription()));
+                    ExceptionHelper.LogException(new Exception(company.GetLastErrorDescription() + JsonConvert.SerializeObject(xmlNode)));
                     company.GetLastErrorDescription();
                 }
             }

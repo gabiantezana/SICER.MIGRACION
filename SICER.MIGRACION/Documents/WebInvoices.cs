@@ -2,6 +2,7 @@
 using SICER.MIGRACION.Helper;
 using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 using System.Reflection;
 using System.Runtime.CompilerServices;
@@ -38,7 +39,6 @@ namespace SICER.MIGRACION.Documents
             int tipoDoc = migrationRS.Fields.Item("TipoDocumento").Value.ToInt32();
             int etapa = migrationRS.Fields.Item("Etapa").Value.ToInt32();
             int idFacturaWebMigracion = migrationRS.Fields.Item("IdFacturaWebMigracion").Value.ToInt32();
-            var asdfasf = migrationRS.Fields.Item("DocDate").Value.ToSafeString();
 
             String _aperturaCodigo = migrationRS.Fields.Item("Code").Value.ToSafeString();
 
@@ -72,10 +72,36 @@ namespace SICER.MIGRACION.Documents
                 invoice.NumAtCard = migrationRS.Fields.Item("NumAtCard").Value.ToSafeString();
                 invoice.FolioPrefixString = migrationRS.Fields.Item("FolioPref").Value.ToSafeString();
                 invoice.FolioNumber = migrationRS.Fields.Item("FolioNum").Value.ToInt32();
-                invoice.DocDate = DateTime.ParseExact(migrationRS.Fields.Item("DocDate").Value.ToSafeString(), "yyyy-MM-dd", System.Globalization.CultureInfo.InvariantCulture);
-                invoice.DocDueDate = DateTime.ParseExact(migrationRS.Fields.Item("DocDueDate").Value.ToSafeString(), "yyyy-MM-dd", System.Globalization.CultureInfo.InvariantCulture);
-                invoice.TaxDate = DateTime.ParseExact(migrationRS.Fields.Item("TaxDate").Value.ToSafeString(), "yyyy-MM-dd", System.Globalization.CultureInfo.InvariantCulture);
 
+
+                try
+
+                {
+                    invoice.DocDate = Convert.ToDateTime(migrationRS.Fields.Item("DocDate").Value.ToSafeString());
+                }
+                catch (Exception ex)
+                {
+                    throw new Exception("No se puede castear invoice.DocDate:" + migrationRS.Fields.Item("DocDate").Value.ToSafeString());
+                }
+
+                try
+                {
+                    invoice.DocDueDate = Convert.ToDateTime(migrationRS.Fields.Item("DocDueDate").Value.ToSafeString());
+                }
+                catch (Exception ex)
+                {
+                    throw new Exception("No se puede castear invoice.DocDueDate:" + migrationRS.Fields.Item("DocDueDate").Value.ToSafeString());
+                }
+
+                try
+                {
+                    invoice.TaxDate = Convert.ToDateTime(migrationRS.Fields.Item("TaxDate").Value.ToSafeString());
+                }
+                catch (Exception ex)
+                {
+                    throw new Exception("No se puede castear invoice.TaxDate:" + migrationRS.Fields.Item("TaxDate").Value.ToSafeString());
+                }
+                //dd-MM-yyyy formato solo usado para rashperu. Default: yyyy-MM-dd
                 //CAMPOS DE USUARIO
                 try
                 { invoice.UserFields.Fields.Item("U_MSSL_TOP").Value = "02"; }
@@ -119,6 +145,7 @@ namespace SICER.MIGRACION.Documents
                 try
                 { invoice.Lines.UserFields.Fields.Item("U_MSS_ORD").Value = migrationRS.Fields.Item("U_MSS_ORD").Value.ToSafeString(); }
                 catch (Exception ex) { ExceptionHelper.LogException(ex); }
+
 
                 invoice.Lines.Add();
                 Company.StartTransaction();
@@ -207,7 +234,7 @@ namespace SICER.MIGRACION.Documents
                 try
                 { payment.UserFields.Fields.Item("U_MSSL_TMP").Value = "008"; }
                 catch (Exception ex) { ExceptionHelper.LogException(ex); }
-               
+
                 switch (doc.DocCurrency)
                 {
                     case "SOL":
@@ -227,7 +254,7 @@ namespace SICER.MIGRACION.Documents
                 ExceptionHelper.LogException(ex);
                 throw;
             }
-            
+
         }
 
         public void UpdateFacturaWebMigracion(Int32 idFacturaMigracion, String INT_Estado, String INT_Error, Int32? DocEntry, ref ADODB.Recordset updateRS)

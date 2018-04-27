@@ -10,7 +10,7 @@ namespace SICER.MIGRACION.Documents
     public class BusinessPartners : MDocument
     {
         private const string BUSINESS_PARTNER_SP_SUFFIX = "EXEC " + "MSS_SP_SICER_BUSINESSPARTNERS"; //"SEI_STW_BusinessPartners";
-        private const string BUSINESS_PARTNER_TABLE = "SICER_INT_SBO.dbo.MaestroTrabajadores";
+        private const string BUSINESS_PARTNER_TABLE = "dbo.MaestroTrabajadores";
         private const string BP_KEY = "CardCode";
 
         public BusinessPartners(SAPbobsCOM.Company Company)

@@ -1,28 +1,27 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
+using System.IO;
 using System.Reflection;
-using System.Text;
 
 namespace SICER.MIGRACION.Helper
 {
     public sealed class ExceptionHelper
     {
-        private ExceptionHelper() { }
+        private ExceptionHelper()
+        {
+        }
 
         public static void LogException(Exception exc)
         {
+            var route = @"C:\LOG\" + GetProjectName();
+            var fileName = DateTime.Now.ToString("yyyy-MM-dd") + ".txt";
+            var logFile = route + @"\" + fileName;
 
-            String route = @"C:\LOG\" + GetProjectName();
-            String fileName = DateTime.Now.ToString("yyyy-MM-dd") + ".txt";
-            String logFile = route + @"\" + fileName;
+            Directory.CreateDirectory(route);
 
-            System.IO.Directory.CreateDirectory(route);
+            if (!File.Exists(logFile))
+                File.Create(logFile).Close();
 
-            if (!System.IO.File.Exists(logFile))
-                System.IO.File.Create(logFile).Close();
-
-            System.IO.StreamWriter sw = new System.IO.StreamWriter(logFile, true);
+            var sw = new StreamWriter(logFile, true);
             sw.WriteLine(" * ********* {0} **********", DateTime.Now);
 
             sw.Write("Exception Type: ");
@@ -57,7 +56,6 @@ namespace SICER.MIGRACION.Helper
             try
             {
                 return Assembly.GetCallingAssembly().GetName().Name;
-
             }
             catch (Exception)
             {

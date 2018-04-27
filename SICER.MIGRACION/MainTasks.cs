@@ -1,20 +1,13 @@
-﻿using SICER.MIGRACION.Connections;
-using SICER.MIGRACION.Documents;
-using SICER.MIGRACION.Documents.Structs;
-using SICER.MIGRACION.Helper;
-using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Diagnostics;
-using System.Linq;
+﻿using System;
 using System.ServiceProcess;
-using System.Text;
 using System.Timers;
+using SICER.MIGRACION.Connections;
+using SICER.MIGRACION.Documents;
+using SICER.MIGRACION.Helper;
 
 namespace SICER.MIGRACION
 {
-    partial class MainTasks : ServiceBase
+    internal partial class MainTasks : ServiceBase
     {
         private const double INITIAL_TIME = 5000.0d;
         private const double CYCLE_INTERVAL = 5000.0d;
@@ -24,21 +17,22 @@ namespace SICER.MIGRACION
         {
             InitializeComponent();
         }
+
         protected override void OnStart(string[] args)
         {
-            Exception ex = new Exception("Service has been started");
+            var ex = new Exception("Service has been started");
             ExceptionHelper.LogException(ex);
 
             trigger = new Timer(INITIAL_TIME);
             trigger.Interval = CYCLE_INTERVAL;
             trigger.AutoReset = false;
-            trigger.Elapsed += new System.Timers.ElapsedEventHandler(Tasks);
+            trigger.Elapsed += Tasks;
             trigger.Enabled = true;
         }
 
         protected override void OnStop()
         {
-            Exception ex = new Exception("Service has been stopped");
+            var ex = new Exception("Service has been stopped");
             ExceptionHelper.LogException(ex);
             trigger.Dispose();
         }
@@ -46,16 +40,16 @@ namespace SICER.MIGRACION
         private void Tasks(object sender, ElapsedEventArgs e)
         {
             trigger.Enabled = false;
-            Connection con = new Connection();
+            var con = new Connection();
             try
             {
                 con.initializeConnections();
-                HashSet<string> companies = con.companiesConnected();
-                foreach (string company in companies)
+                var companies = con.companiesConnected();
+                foreach (var company in companies)
                 {
-                    SAPbobsCOM.Company Company = con.getCompany(company);
+                    var Company = con.getCompany(company);
 
-                    BusinessPartners bp = new BusinessPartners(Company);
+                    var bp = new BusinessPartners(Company);
                     bp.migrateBP(Company);
 
                     //JournalEntries je = new JournalEntries(Company);
@@ -64,12 +58,11 @@ namespace SICER.MIGRACION
                     //Invoices rInv = new Invoices(Company);
                     //rInv.migrate(Company);
 
-                    WebInvoices webInv = new WebInvoices();
+                    var webInv = new WebInvoices();
                     webInv.migrate(Company);
 
                     //SalesInvoices salesInv = new SalesInvoices(Company);
                     //salesInv.migrate(Company);
-
                 }
                 con.Dispose();
             }
@@ -77,7 +70,6 @@ namespace SICER.MIGRACION
             {
                 con.Dispose();
                 ExceptionHelper.LogException(ex);
-
             }
             finally
             {
