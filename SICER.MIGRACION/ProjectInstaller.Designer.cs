@@ -40,7 +40,7 @@
             // 
             // serviceInstaller1
             // 
-            this.serviceInstaller1.ServiceName = "SICER.MIGRACION.SETUP.3";
+            this.serviceInstaller1.ServiceName = "SICER.MIGRACION.SETUP.PRUEBAS";
             this.serviceInstaller1.AfterInstall += new System.Configuration.Install.InstallEventHandler(this.serviceInstaller1_AfterInstall);
             // 
             // ProjectInstaller

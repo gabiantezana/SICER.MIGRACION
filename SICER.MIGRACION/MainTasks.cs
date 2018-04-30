@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Configuration;
+using System.Reflection;
 using System.ServiceProcess;
 using System.Timers;
 using SICER.MIGRACION.Connections;
@@ -13,11 +15,14 @@ namespace SICER.MIGRACION
         private const double CYCLE_INTERVAL = 5000.0d;
         private Timer trigger;
 
+
         public MainTasks()
         {
             InitializeComponent();
+            this.ServiceName = ConfigurationManager.AppSettings.Get("ServiceName");
         }
 
+     
         protected override void OnStart(string[] args)
         {
             var ex = new Exception("Service has been started");
